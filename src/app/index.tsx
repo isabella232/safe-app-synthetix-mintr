@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 //import Web3 from "web3";
 import { Card, Text, Loader } from '@gnosis.pm/safe-react-components';
 import initSdk, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
+import Mint from './mint';
 
 // import { web3Provider } from "../config";
 
@@ -20,15 +21,7 @@ const App = () => {
     return () => appsSdk.removeListeners();
   }, [appsSdk]);
 
-  return (
-    <Card>
-      {safeInfo ? (
-        <Text size="sm">JSON.stringify(safeInfo) </Text>
-      ) : (
-        <Loader size="md" />
-      )}
-    </Card>
-  );
+  return <Mint />;
 };
 
 export default App;
