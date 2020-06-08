@@ -21,6 +21,14 @@ const StyledLinearProgress = styled(LinearProgress)`
     height: 20px;
   }
 `;
+const StyledButton = styled(Button)`
+ &.MuiButton-root {
+  background-color: #727CFF;
+  color: #FFFFFF;
+  font-size: 1em;
+  padding: 16px 24px;
+  }
+`;
 
 const TotalSnx = () => {
   return (
@@ -56,13 +64,13 @@ const TotalSnx = () => {
 
 const tokens = [
   {
-    icon: <Icon size="sm" type="apps" />,
+    icon: <Icon size="sm" type="snx" />,
     name: 'SNX',
     balance: '0.8',
     usdPrice: '$1.89'
   },
   {
-    icon: <Icon size="sm" type="apps" />,
+    icon: <Icon size="sm" type="susd" />,
     name: 'sUSD',
     balance: '0.8',
     usdPrice: '$1.89'
@@ -92,10 +100,10 @@ function Left() {
           alignItems="center"
         >
           <Value>
-            <Icon size="sm" type="apps" /> 1 SNX = $0.78 USD
+            <Icon size="sm" type="snx" /> 1 SNX = $0.78 USD
           </Value>
           <Value>
-            <Icon size="sm" type="apps" /> 1 ETH = $238.87 USD
+            <Icon size="sm" type="eth" /> 1 ETH = $238.87 USD
           </Value>
         </Grid>
 
@@ -113,7 +121,7 @@ function Right() {
   return (
     <>
       <Section
-        icon={<Icon size="lg" type="apps" />}
+        icon={<Icon size="sm" type="claim" />}
         name="Mint"
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
@@ -122,7 +130,7 @@ function Right() {
         <Card>
           <Grid container>
             <Grid item>
-              <Icon size="md" type="apps" />
+              <Icon size="md" type="susd" />
               <Text size="lg">sUSD</Text>
               <TextField
                 id="standard-name"
@@ -138,7 +146,7 @@ function Right() {
         <p>
           <span>Ethereum network fees: $0 / 27 GWEI</span> <a href="/">EDIT</a>
         </p>
-        <Button variant="contained">Mint Now</Button>
+        <StyledButton variant="contained">Mint Now</StyledButton>
       </div>
     </>
   );

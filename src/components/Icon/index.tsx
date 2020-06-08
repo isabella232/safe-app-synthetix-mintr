@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import { Theme } from '../../theme';
 
 import apps from './images/apps';
+import mint from './images/mint';
+import burn from './images/burn';
+import claim from './images/claim';
+import eth from './images/eth';
+import snx from './images/snx';
+import susd from './images/susd';
 
 const StyledIcon = styled.span<any>`
   .icon-color {
@@ -12,7 +18,13 @@ const StyledIcon = styled.span<any>`
 `;
 
 const icons = {
-  apps
+  apps,
+  mint,
+  burn,
+  claim,
+  eth,
+  snx,
+  susd
 };
 
 export type IconType = typeof icons;
