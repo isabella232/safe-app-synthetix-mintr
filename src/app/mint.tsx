@@ -14,6 +14,7 @@ import { BalancesContext } from './BalancesProvider';
 import { CRYPTO_CURRENCY_TO_KEY } from '../constants/currency';
 import BalanceTable from '../components/Table/BalanceTable';
 import { getBalancesWithRates } from './balancesHelpers';
+import IconText from '../components/IconText';
 
 const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
@@ -133,8 +134,13 @@ function Left() {
         >
           {['SNX', 'ETH'].map((asset: any) => (
             <Asset key={asset}>
-              <Icon size="sm" type={asset.toLocaleLowerCase()} /> 1 {asset} = $
-              {formatCurrency(rates[asset])} USD
+              <IconText
+                iconSize="sm"
+                textSize="lg"
+                iconType={asset.toLocaleLowerCase()}
+                text={`1 ${asset} = $
+                ${formatCurrency(rates[asset])} USD`}
+              />
             </Asset>
           ))}
         </Grid>

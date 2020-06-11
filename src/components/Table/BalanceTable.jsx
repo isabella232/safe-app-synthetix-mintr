@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 import { formatCurrency } from '../../helpers/formatters';
 import Icon from '../Icon';
+import IconText from '../IconText';
 
 const TABLE_COLUMNS = ['SNX', 'sUSD', 'ETH', 'Synths', 'Debt'];
 const AGGREGATED_COLUMNS = ['Synths', 'Debt'];
@@ -67,8 +68,12 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
           {data.map((token, index) => (
             <TableRow key={index}>
               <TableCell component="th" scope="row">
-                <Icon size="sm" type={token.icon.toLowerCase()} />
-                {token.name}
+                <IconText
+                  iconSize="sm"
+                  textSize="lg"
+                  iconType={token.icon.toLowerCase()}
+                  text={token.name}
+                />
               </TableCell>
               <TableCell align="right">
                 {formatCurrency(token.balance)}
