@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
-import {
-  Divider,
-  Text,
-  Card,
-  TextField
-} from '@gnosis.pm/safe-react-components';
+import { Divider, Text, TextField } from '@gnosis.pm/safe-react-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Button from '@material-ui/core/Button';
 import { SynthetixJs } from 'synthetix-js';
@@ -24,16 +19,28 @@ const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
 const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
-    height: 20px;
+    height: 15px;
   }
 `;
 const StyledButton = styled(Button)`
   &.MuiButton-root {
     background-color: #727cff;
     color: #ffffff;
-    font-size: 1em;
+    font-size: 1rem;
     padding: 16px 24px;
   }
+
+  &.MuiButton-root:hover {
+    background-color: #8c94ff;
+  }
+`;
+
+const StyledGrid = styled(Grid)``;
+
+const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
 `;
 
 const TotalSnx = () => {
@@ -45,11 +52,6 @@ const TotalSnx = () => {
     data?.debtData?.targetCRatio &&
     snxBalance *
       Math.min(1, data?.debtData?.currentCRatio / data?.debtData?.targetCRatio);
-  console.log({
-    balances,
-    snxLocked,
-    locked: data?.debtData?.currentCRatio / data?.debtData?.targetCRatio
-  });
   return (
     <StyledTotalSnx container>
       <Grid item xs={6}>
@@ -90,21 +92,6 @@ const TotalSnx = () => {
     </StyledTotalSnx>
   );
 };
-
-const tokens = [
-  {
-    icon: <Icon size="sm" type="snx" />,
-    name: 'SNX',
-    balance: '0.8',
-    usdPrice: '$1.89'
-  },
-  {
-    icon: <Icon size="sm" type="susd" />,
-    name: 'sUSD',
-    balance: '0.8',
-    usdPrice: '$1.89'
-  }
-];
 
 function Left() {
   const rates: any = useContext(RatesContext);
@@ -170,31 +157,33 @@ function Right() {
   return (
     <>
       <Section
-        icon={<Icon size="sm" type="claim" />}
+        icon={<Icon size="sm" type="mint" />}
         name="Mint"
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
       <div>
         <Text size="sm">Confirm or enter the amount to mint</Text>
-        <Card>
-          <Grid container>
-            <Grid item>
-              <Icon size="md" type="susd" />
-              <Text size="lg">sUSD</Text>
-              <TextField
-                id="standard-name"
-                label="Name"
-                value="0.00"
-                onChange={e => console.log(e.target.value)}
-              />
-              <Button variant="contained">MAX</Button>
-            </Grid>
+        <Grid container>
+          <Grid item>
+            <Icon size="md" type="susd" />
+            <Text size="lg">sUSD</Text>
+            <TextField
+              id="standard-name"
+              label="Name"
+              value="0.00"
+              onChange={e => console.log(e.target.value)}
+            />
+            <Button variant="contained">MAX</Button>
           </Grid>
-        </Card>
-        <span>Staking: 0 SNX</span> <span>Estimated C-Ratio: 5%</span>
-        <p>
-          <span>Ethereum network fees: $0 / 27 GWEI</span> <a href="/">EDIT</a>
-        </p>
+        </Grid>
+        <TextContainer>
+          <Text size="lg">Staking: 0 SNX</Text>
+          <Text size="lg">Estimated C-Ratio: 5%</Text>
+        </TextContainer>
+
+        <Text size="lg">
+          Ethereum network fees: $0 / 27 GWEI<a href="/">EDIT</a>
+        </Text>
         <StyledButton variant="contained">Mint Now</StyledButton>
       </div>
     </>
@@ -215,14 +204,14 @@ function Mint(props: any) {
   }, [snxjs]);
 
   return (
-    <Grid container>
+    <StyledGrid container spacing={2}>
       <Grid item sm={6}>
         <Left />
       </Grid>
       <Grid item sm={6}>
         <Right />
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }
 
