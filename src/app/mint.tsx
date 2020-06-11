@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import {
   Divider,
   Text,
-  Card,
-  TextField
+  TextField,
 } from '@gnosis.pm/safe-react-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Button from '@material-ui/core/Button';
@@ -18,16 +17,28 @@ const Value = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
 const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
-    height: 20px;
+    height: 15px;
   }
 `;
 const StyledButton = styled(Button)`
  &.MuiButton-root {
   background-color: #727CFF;
   color: #FFFFFF;
-  font-size: 1em;
+  font-size: 1rem;
   padding: 16px 24px;
   }
+
+  &.MuiButton-root:hover {
+  background-color: #8c94ff;
+  }
+`;
+
+const StyledGrid = styled(Grid)``;
+
+const TextContainer = styled.div`
+display: flex;
+justify-content: space-between;
+margin-bottom: 3rem;
 `;
 
 const TotalSnx = () => {
@@ -121,13 +132,12 @@ function Right() {
   return (
     <>
       <Section
-        icon={<Icon size="sm" type="claim" />}
+        icon={<Icon size="sm" type="mint" />}
         name="Mint"
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
       <div>
         <Text size="sm">Confirm or enter the amount to mint</Text>
-        <Card>
           <Grid container>
             <Grid item>
               <Icon size="md" type="susd" />
@@ -141,11 +151,12 @@ function Right() {
               <Button variant="contained">MAX</Button>
             </Grid>
           </Grid>
-        </Card>
-        <span>Staking: 0 SNX</span> <span>Estimated C-Ratio: 5%</span>
-        <p>
-          <span>Ethereum network fees: $0 / 27 GWEI</span> <a href="/">EDIT</a>
-        </p>
+          <TextContainer>
+            <Text size="lg">Staking: 0 SNX</Text> 
+            <Text size="lg">Estimated C-Ratio: 5%</Text>
+          </TextContainer>
+          
+        <Text size="lg">Ethereum network fees: $0 / 27 GWEI<a href="/">EDIT</a></Text> 
         <StyledButton variant="contained">Mint Now</StyledButton>
       </div>
     </>
@@ -154,14 +165,14 @@ function Right() {
 
 function Mint(props: any) {
   return (
-    <Grid container>
+    <StyledGrid container spacing={2}>
       <Grid item sm={6}>
         <Left />
       </Grid>
       <Grid item sm={6}>
         <Right />
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }
 
