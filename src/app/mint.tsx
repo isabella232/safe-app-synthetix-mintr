@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import {
   Divider,
@@ -8,13 +8,19 @@ import {
 } from '@gnosis.pm/safe-react-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Button from '@material-ui/core/Button';
+import { SynthetixJs } from 'synthetix-js';
 import Stat from '../components/Stat';
 import Icon from '../components/Icon';
 import Grid from '@material-ui/core/Grid';
-import TokensTable from '../components/Table';
 import Section from '../components/Section';
+import { formatCurrency } from '../helpers/formatters';
+import { RatesContext } from './RatesProvider';
+import { BalancesContext } from './BalancesProvider';
+import { CRYPTO_CURRENCY_TO_KEY } from '../constants/currency';
+import BalanceTable from '../components/Table/BalanceTable';
+import { getBalancesWithRates } from './balancesHelpers';
 
-const Value = styled.div``;
+const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
 const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
@@ -22,41 +28,64 @@ const StyledLinearProgress = styled(LinearProgress)`
   }
 `;
 const StyledButton = styled(Button)`
- &.MuiButton-root {
-  background-color: #727CFF;
-  color: #FFFFFF;
-  font-size: 1em;
-  padding: 16px 24px;
+  &.MuiButton-root {
+    background-color: #727cff;
+    color: #ffffff;
+    font-size: 1em;
+    padding: 16px 24px;
   }
 `;
 
 const TotalSnx = () => {
+  const { balances = {}, data = {} }: any = useContext(BalancesContext);
+  const snxBalance = balances[CRYPTO_CURRENCY_TO_KEY.SNX];
+  const snxLocked =
+    snxBalance &&
+    data?.debtData?.currentCRatio &&
+    data?.debtData?.targetCRatio &&
+    snxBalance *
+      Math.min(1, data?.debtData?.currentCRatio / data?.debtData?.targetCRatio);
+  console.log({
+    balances,
+    snxLocked,
+    locked: data?.debtData?.currentCRatio / data?.debtData?.targetCRatio
+  });
   return (
     <StyledTotalSnx container>
       <Grid item xs={6}>
         TOTAL SNX
       </Grid>
       <Grid item xs={6}>
-        12 SNX
+        {formatCurrency(snxBalance) || 0} SNX
       </Grid>
       <Divider />
       <Grid item xs={6}>
-        Locked: 0
+        Locked: {formatCurrency(snxBalance - data?.debtData?.transferable || 0)}
       </Grid>
       <Grid item xs={6}>
-        Transferable: 0
+        Transferable: {formatCurrency(data?.debtData?.transferable || 0)}
       </Grid>
       <Grid item xs={12}>
-        <StyledLinearProgress variant="determinate" value={50} />
+        <StyledLinearProgress
+          variant="determinate"
+          value={Math.max(
+            (100 * (snxBalance - data?.debtData?.transferable)) /
+              data?.debtData?.transferable,
+            1
+          )}
+        />
       </Grid>
       <Grid item xs={6}>
-        Staked: 0
+        Staked: {formatCurrency(snxLocked)}
       </Grid>
       <Grid item xs={6}>
-        Not staked: 0
+        Not staked: {formatCurrency(snxBalance - snxLocked || 0)}
       </Grid>
       <Grid item xs={12}>
-        <StyledLinearProgress variant="determinate" value={50} />
+        <StyledLinearProgress
+          variant="determinate"
+          value={Math.max((100 * snxLocked) / (snxBalance - snxLocked), 1)}
+        />
       </Grid>
     </StyledTotalSnx>
   );
@@ -78,14 +107,30 @@ const tokens = [
 ];
 
 function Left() {
+  const rates: any = useContext(RatesContext);
+  const { balances = {}, data = {} }: any = useContext(BalancesContext);
+  const walletBalancesWithRates = getBalancesWithRates(rates, balances);
+  const currentRatio = data?.debtData?.currentCRatio
+    ? Math.round(100 / data?.debtData?.currentCRatio)
+    : 0;
+  const ratioTarget = data?.debtData?.targetCRatio
+    ? Math.round(100 / data?.debtData?.targetCRatio)
+    : 0;
+
   return (
     <>
       <Grid container>
         <Grid item xs={12} sm={6}>
-          <Stat stat="0%" description="Current collateralization ratio"></Stat>
+          <Stat
+            stat={`${currentRatio}%`}
+            description="Current collateralization ratio"
+          ></Stat>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Stat stat="800%" description="Target collateralization ratio"></Stat>
+          <Stat
+            stat={`${ratioTarget}%`}
+            description="Target collateralization ratio"
+          ></Stat>
         </Grid>
       </Grid>
 
@@ -99,12 +144,12 @@ function Left() {
           justify="center"
           alignItems="center"
         >
-          <Value>
-            <Icon size="sm" type="snx" /> 1 SNX = $0.78 USD
-          </Value>
-          <Value>
-            <Icon size="sm" type="eth" /> 1 ETH = $238.87 USD
-          </Value>
+          {['SNX', 'ETH'].map((asset: any) => (
+            <Asset key={asset}>
+              <Icon size="sm" type={asset.toLocaleLowerCase()} /> 1 {asset} = $
+              {formatCurrency(rates[asset])} USD
+            </Asset>
+          ))}
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -112,7 +157,11 @@ function Left() {
         </Grid>
       </Grid>
 
-      <TokensTable tokens={tokens} />
+      <BalanceTable
+        rates={rates}
+        debtData={data.debtData}
+        walletBalancesWithRates={walletBalancesWithRates}
+      />
     </>
   );
 }
@@ -153,6 +202,18 @@ function Right() {
 }
 
 function Mint(props: any) {
+  const [snxjs] = useState(new SynthetixJs({ networkId: 4 }));
+
+  useEffect(() => {
+    const load = async () => {
+      const totalSUSD = await snxjs.sUSD.totalSupply();
+      const totalSUSDSupply = snxjs.utils.formatEther(totalSUSD);
+      console.log('sUSDTotalSupply', totalSUSDSupply);
+    };
+
+    load();
+  }, [snxjs]);
+
   return (
     <Grid container>
       <Grid item sm={6}>
