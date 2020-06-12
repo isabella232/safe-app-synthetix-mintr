@@ -21,7 +21,11 @@ const StyledTotalSnx = styled(Grid)``;
 const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
+    margin-bottom:10px; 
   }
+  /* &.MuiLinearProgress-barColorPrimary {
+    background-color: #cecece;
+  } */
 `;
 const StyledButton = styled(Button)`
   &.MuiButton-root {
@@ -56,17 +60,24 @@ const TotalSnx = () => {
   return (
     <StyledTotalSnx container>
       <Grid item xs={6}>
-        TOTAL SNX
+        <Text size="sm">TOTAL:</Text>
       </Grid>
       <Grid item xs={6}>
-        {formatCurrency(snxBalance) || 0} SNX
+        <Text size="sm" strong>
+          {formatCurrency(snxBalance) || 0} SNX
+        </Text>
       </Grid>
       <Divider />
       <Grid item xs={6}>
-        Locked: {formatCurrency(snxBalance - data?.debtData?.transferable || 0)}
+        <Text size="sm">
+          Locked:{' '}
+          {formatCurrency(snxBalance - data?.debtData?.transferable || 0)}
+        </Text>
       </Grid>
       <Grid item xs={6}>
-        Transferable: {formatCurrency(data?.debtData?.transferable || 0)}
+        <Text size="sm">
+          Transferable: {formatCurrency(data?.debtData?.transferable || 0)}
+        </Text>
       </Grid>
       <Grid item xs={12}>
         <StyledLinearProgress
@@ -79,10 +90,12 @@ const TotalSnx = () => {
         />
       </Grid>
       <Grid item xs={6}>
-        Staked: {formatCurrency(snxLocked)}
+        <Text size="sm">Staked: {formatCurrency(snxLocked)}</Text>
       </Grid>
       <Grid item xs={6}>
-        Not staked: {formatCurrency(snxBalance - snxLocked || 0)}
+        <Text size="sm">
+          Not staked: {formatCurrency(snxBalance - snxLocked || 0)}
+        </Text>
       </Grid>
       <Grid item xs={12}>
         <StyledLinearProgress
@@ -188,7 +201,7 @@ function Right() {
         </TextContainer>
 
         <Text size="lg">
-          Ethereum network fees: $0 / 27 GWEI<a href="/">EDIT</a>
+          Ethereum network fees: $0 / 27 GWEI <a href="/">EDIT</a>
         </Text>
         <StyledButton variant="contained">Mint Now</StyledButton>
       </div>

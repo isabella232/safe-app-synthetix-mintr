@@ -56,7 +56,7 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
   );
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table size="small" aria-label="compact table">
         <TableHead>
           <TableRow>
             <TableCell></TableCell>

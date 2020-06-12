@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import { Text } from '@gnosis.pm/safe-react-components';
+import { Text, Title } from '@gnosis.pm/safe-react-components';
 
-const Name = styled.span`
+const StyledTitle = styled(Title)`
   text-transform: uppercase;
   font-size: 1.7rem;
   color: #008C73;
+  margin-top:10px;
 `;
 
-const Description = styled(Text)`
+const StyledText = styled(Text)`
   font-size: .9rem;
   color: #333333;
 `;
@@ -27,10 +28,10 @@ function Section({ icon, name, description }: Props) {
         {icon}
       </Grid>
       <Grid item xs={6} sm={3}>
-        <Name>{name}</Name>
+        <StyledTitle size="lg">{name}</StyledTitle>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Description size="lg">{description}</Description>
+        <StyledText size="lg">{description}</StyledText>
       </Grid>
     </Grid>
   );
