@@ -33,13 +33,7 @@ export const INFURA_JSON_RPC_URLS = {
 
 export const INFURA_ARCHIVE_JSON_RPC_URL = `https://mainnet.infura.io/v3/${INFURA_ARCHIVE_PROJECT_ID}`;
 
-export const SUPPORTED_WALLETS = [
-  'Metamask',
-  'Trezor',
-  'Ledger',
-  'Coinbase',
-  'WalletConnect'
-];
+export const SUPPORTED_WALLETS = ['Metamask'];
 
 export const hasWeb3 = () => {
   return window.web3;

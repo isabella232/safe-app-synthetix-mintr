@@ -51,7 +51,7 @@ const App = () => {
   return (
     <RatesContextProvider appInitialized={appInitialized}>
       <BalancesContextProvider address={safeInfo && safeInfo.safeAddress}>
-        <Mint />
+        {safeInfo ? <Mint address={safeInfo && safeInfo.safeAddress} /> : null}
       </BalancesContextProvider>
     </RatesContextProvider>
   );
