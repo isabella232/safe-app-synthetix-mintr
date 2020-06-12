@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Divider, Text, TextField } from '@gnosis.pm/safe-react-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Button from '@material-ui/core/Button';
-import { SynthetixJs } from 'synthetix-js';
 import Stat from '../components/Stat';
 import Icon from '../components/Icon';
 import Grid from '@material-ui/core/Grid';
@@ -296,7 +295,7 @@ function Mint({ address }: any) {
     snxBalance
   } = useGetIssuanceData(address, sUSDBytes);
 
-  const gasEstimateError = useGetGasEstimate(
+  /*const gasEstimateError =*/ useGetGasEstimate(
     mintAmount,
     issuableSynths,
     setGasLimit
@@ -374,18 +373,6 @@ function Mint({ address }: any) {
 }
 
 function MintPage({ address }: any) {
-  const [snxjs] = useState(new SynthetixJs({ networkId: 4 }));
-
-  useEffect(() => {
-    const load = async () => {
-      const totalSUSD = await snxjs.sUSD.totalSupply();
-      const totalSUSDSupply = snxjs.utils.formatEther(totalSUSD);
-      console.log('sUSDTotalSupply', totalSUSDSupply);
-    };
-
-    load();
-  }, [snxjs]);
-
   return (
     <StyledGrid container spacing={2}>
       <Grid item sm={6}>

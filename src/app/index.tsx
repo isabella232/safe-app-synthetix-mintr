@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import initSdk, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
+import { ethers } from 'ethers';
 import Mint from './mint';
 import RatesContextProvider from './RatesProvider';
 import snxJSConnector from '../helpers/snxJSConnector';
-import { ethers } from 'ethers';
 import BalancesContextProvider from './BalancesProvider';
-
-// import { web3Provider } from "../config";
-
-// const web3: any = new Web3(web3Provider);
 
 const App = () => {
   const [appsSdk] = useState(initSdk());
@@ -44,17 +40,31 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    snxJSConnector.setContractSettings({ networkId: 4 });
-    setAppInitialized(true);
-  }, []);
+    if (!safeInfo) {
+      return;
+    }
+    const init = async () => {
+      const provider = ethers.getDefaultProvider(safeInfo.network);
+      const network = await provider.getNetwork();
+      snxJSConnector.setContractSettings({
+        networkId: network.chainId,
+        network: network.name,
+        provider
+      });
+      setAppInitialized(true);
+      console.log(safeInfo);
+    };
 
-  return (
-    <RatesContextProvider appInitialized={appInitialized}>
-      <BalancesContextProvider address={safeInfo && safeInfo.safeAddress}>
-        {safeInfo ? <Mint address={safeInfo && safeInfo.safeAddress} /> : null}
+    init();
+  }, [safeInfo]);
+
+  return appInitialized ? (
+    <RatesContextProvider>
+      <BalancesContextProvider address={safeInfo!.safeAddress}>
+        <Mint address={safeInfo!.safeAddress} />
       </BalancesContextProvider>
     </RatesContextProvider>
-  );
+  ) : null;
 };
 
 export default App;

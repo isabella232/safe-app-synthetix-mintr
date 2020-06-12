@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 
 import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 import { formatCurrency } from '../../helpers/formatters';
-import Icon from '../Icon';
 import IconText from '../IconText';
 import { Text } from '@gnosis.pm/safe-react-components';
 

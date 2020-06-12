@@ -82,21 +82,17 @@ function reducer(state, action) {
 
 export const RatesContext = createContext({});
 
-function RatesContextProvider({ appInitialized, children }) {
+function RatesContextProvider({ children }) {
   let [rates, dispatch] = useReducer(reducer, {});
 
   useEffect(() => {
-    if (!appInitialized) {
-      return;
-    }
-
     fetchRates().then(rates => {
       dispatch({
         type: 'ratesReady',
         payload: rates
       });
     });
-  }, [appInitialized]);
+  }, []);
 
   return (
     <RatesContext.Provider value={rates}>{children}</RatesContext.Provider>
