@@ -12,6 +12,7 @@ import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 import { formatCurrency } from '../../helpers/formatters';
 import Icon from '../Icon';
 import IconText from '../IconText';
+import { Text } from '@gnosis.pm/safe-react-components';
 
 const TABLE_COLUMNS = ['SNX', 'sUSD', 'ETH', 'Synths', 'Debt'];
 const AGGREGATED_COLUMNS = ['Synths', 'Debt'];
@@ -60,8 +61,12 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
-            <TableCell align="right">Balance</TableCell>
-            <TableCell align="right">$ USD</TableCell>
+            <TableCell align="right">
+              <Text size="sm">Balance</Text>
+            </TableCell>
+            <TableCell align="right">
+              <Text size="sm">$ USD</Text>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -76,10 +81,10 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
                 />
               </TableCell>
               <TableCell align="right">
-                {formatCurrency(token.balance)}
+                <Text size="sm">{formatCurrency(token.balance)}</Text>
               </TableCell>
               <TableCell align="right">
-                {formatCurrency(token.valueUSD)}
+                <Text size="sm">{formatCurrency(token.valueUSD)}</Text>
               </TableCell>
             </TableRow>
           ))}
