@@ -30,7 +30,7 @@ const StyledTotalSnx = styled(Grid)``;
 const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
-    margin-bottom:10px; 
+    margin-bottom: 10px;
   }
   /* &.MuiLinearProgress-barColorPrimary {
     background-color: #cecece;
@@ -92,8 +92,7 @@ const TotalSnx = () => {
         <StyledLinearProgress
           variant="determinate"
           value={Math.max(
-            (100 * (snxBalance - data?.debtData?.transferable)) /
-              data?.debtData?.transferable,
+            (100 * (snxBalance - data?.debtData?.transferable)) / snxBalance,
             1
           )}
         />
@@ -109,7 +108,7 @@ const TotalSnx = () => {
       <Grid item xs={12}>
         <StyledLinearProgress
           variant="determinate"
-          value={Math.max((100 * snxLocked) / (snxBalance - snxLocked), 1)}
+          value={Math.max(100 * (snxLocked / snxBalance), 1)}
         />
       </Grid>
     </StyledTotalSnx>
