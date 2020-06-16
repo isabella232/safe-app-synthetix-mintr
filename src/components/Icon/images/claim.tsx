@@ -3,8 +3,8 @@ import React from 'react';
 export default {
   sm: (
     <svg
-      width="64px"
-      height="64px"
+      width="16px"
+      height="16px"
       viewBox="0 0 64 64"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

@@ -29,17 +29,17 @@ const StyledLinearProgress = styled(LinearProgress)`
     height: 15px;
     margin-bottom: 10px;
   }
-  & .MuiLinearProgress-ColorPrimary {
-    background-color: #cecece;
+   & .MuiLinearProgress-ColorPrimary {
+    background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
-    background-color: #008c73;
-  }
+    background-color: ${({ theme }) => theme.colors.secondary};
+  } 
 `;
 
 const StyledButton = styled(Button)`
   &.MuiButton-root {
-    background-color: #727cff;
+    background-color: ${({ theme }) => theme.colors.primary};
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
@@ -109,6 +109,7 @@ const TotalSnx = () => {
       <Grid item xs={12}>
         <StyledLinearProgress
           variant="determinate"
+          color="primary"
           value={Math.max(100 * (snxLocked / snxBalance), 1)}
         />
       </Grid>
@@ -292,7 +293,7 @@ function Mint({ address }: any) {
   return (
     <>
       <Section
-        icon={<Icon size="sm" type="mint" />}
+        icon={<Icon size="md" type="mint" />}
         name="Mint"
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
