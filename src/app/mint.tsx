@@ -63,12 +63,12 @@ const MaxButton = styled(Button)`
 
 const StyledTextField = styled(TextField)`
   &.MuiTextField-root {
-    width: auto;
+    width: 100%;
   }
 `;
 
 const StyledGrid = styled(Grid)`
-  margin-top: 20px !important; 
+  margin-top: 20px !important;
 `;
 
 const TextContainer = styled.div`
@@ -290,41 +290,26 @@ function Mint({ address }: any) {
       />
       <div>
         <Text size="sm">Confirm or enter the amount to mint</Text>
-        <Grid container>
-          <Grid item>
-            <Grid
-              item
-              container
-              spacing={2}
-              alignItems="center"
-              justify="flex-start"
+        <Grid container spacing={2} alignItems="center" justify="flex-start">
+          <Grid item sm={2}>
+            <IconText iconSize="sm" textSize="lg" iconType="susd" text="sUSD" />
+          </Grid>
+          <Grid item sm={7}>
+            <StyledTextField
+              label=""
+              value={mintAmount}
+              placeholder="0.00"
+              onChange={e => setMintAmount(e.target.value)}
+              meta={{ error: error }}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <MaxButton
+              variant="contained"
+              onClick={() => setMintAmount(issuableSynths)}
             >
-              <Grid item sm={2}>
-                <IconText
-                  iconSize="sm"
-                  textSize="lg"
-                  iconType="susd"
-                  text="sUSD"
-                />
-              </Grid>
-              <Grid item sm={7}>
-                <StyledTextField
-                  label=""
-                  value={mintAmount}
-                  placeholder="0.00"
-                  onChange={e => setMintAmount(e.target.value)}
-                  meta={{ error: error }}
-                />
-              </Grid>
-              <Grid item sm={3}>
-                <MaxButton
-                  variant="contained"
-                  onClick={() => setMintAmount(issuableSynths)}
-                >
-                  MAX
-                </MaxButton>
-              </Grid>
-            </Grid>
+              MAX
+            </MaxButton>
           </Grid>
         </Grid>
         <TextContainer>
