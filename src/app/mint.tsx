@@ -31,10 +31,14 @@ const StyledLinearProgress = styled(LinearProgress)`
     height: 15px;
     margin-bottom: 10px;
   }
-  /* &.MuiLinearProgress-barColorPrimary {
+  & .MuiLinearProgress-ColorPrimary {
     background-color: #cecece;
-  } */
+  } 
+  & .MuiLinearProgress-barColorPrimary {
+    background-color: #008C73;
+  } 
 `;
+
 const StyledButton = styled(Button)`
   &.MuiButton-root {
     background-color: #727cff;
