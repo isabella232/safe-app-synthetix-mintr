@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import initSdk, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
+import { Tab, TabItem } from '@gnosis.pm/safe-react-components';
 import { ethers } from 'ethers';
 import Mint from './mint';
 import RatesContextProvider from './RatesProvider';
 import snxJSConnector from '../helpers/snxJSConnector';
 import BalancesContextProvider from './BalancesProvider';
+import IconText from '../components/IconText';
 
 const App = () => {
   const [appsSdk] = useState(initSdk());
   const [safeInfo, setSafeInfo] = useState<SafeInfo>();
   const [appInitialized, setAppInitialized] = useState(false);
+  const [selected, setSelected] = useState('1');
 
   // config safe connector
   useEffect(() => {
@@ -58,10 +61,68 @@ const App = () => {
     init();
   }, [safeInfo]);
 
+  const renderSelectedTab = () => {
+    switch (selected) {
+      case '1':
+        return <Mint address={safeInfo!.safeAddress} />;
+      default:
+        return null;
+    }
+  };
+
+  const items: TabItem[] = [
+    {
+      id: '1',
+      label: 'MINT',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="mint"
+          textSize="sm"
+          color={selected === '2' ? 'primary' : 'text'}
+          text="MINT"
+        />
+      )
+    },
+    {
+      id: '2',
+      label: 'BURN',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="burn"
+          textSize="sm"
+          color={selected === '2' ? 'primary' : 'text'}
+          text="BURN"
+        />
+      )
+    },
+    {
+      id: '3',
+      label: 'CLAIM',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="claim"
+          textSize="sm"
+          color={selected === '3' ? 'primary' : 'text'}
+          text="CLAIM"
+        />
+      )
+    }
+  ];
+
   return appInitialized ? (
     <RatesContextProvider>
       <BalancesContextProvider address={safeInfo!.safeAddress}>
-        <Mint address={safeInfo!.safeAddress} />
+        <Tab
+          onChange={setSelected}
+          selectedTab={selected}
+          variant="contained"
+          items={items}
+          fullWidth
+        />
+        {renderSelectedTab()}
       </BalancesContextProvider>
     </RatesContextProvider>
   ) : null;

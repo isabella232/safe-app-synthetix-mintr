@@ -21,8 +21,6 @@ import IconText from '../components/IconText';
 import snxJSConnector from '../helpers/snxJSConnector';
 import { addBufferToGasLimit } from '../helpers/networkHelper';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
-import { getTransactionPrice, getNetworkSpeed } from '../helpers/networkHelper';
-import { NETWORK_SPEEDS_TO_KEY, GWEI_UNIT } from '../constants/network';
 
 const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
@@ -30,10 +28,14 @@ const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
     margin-bottom: 10px;
+
+    &.MuiLinearProgress-barColorPrimary {
+      background-color: #008c73;
+    }
   }
-  /* &.MuiLinearProgress-barColorPrimary {
+  &.MuiLinearProgress-colorPrimary {
     background-color: #cecece;
-  } */
+  }
 `;
 const StyledButton = styled(Button)`
   &.MuiButton-root {
@@ -277,42 +279,15 @@ const useGetGasEstimate = (
 };
 
 function Mint({ address }: any) {
-  const rates = useContext(RatesContext);
   const [mintAmount, setMintAmount] = useState('');
-  const [gasLimit, setGasLimit] = useState(0);
-  const [currentGasPrice, setCurrentGasPrice] = useState<{
-    price: any;
-    formattedPrice: any;
-    time: any;
-  }>();
 
   const sUSDBytes = bytesFormatter('sUSD');
   const {
-    issuableSynths,
     issuanceRatio,
     SNXPrice,
     debtBalance,
     snxBalance
   } = useGetIssuanceData(address, sUSDBytes);
-
-  /*const gasEstimateError =*/ useGetGasEstimate(
-    mintAmount,
-    issuableSynths,
-    setGasLimit
-  );
-
-  useEffect(() => {
-    getNetworkSpeed().then((gasPrices: any) => {
-      if (gasPrices?.[NETWORK_SPEEDS_TO_KEY.AVERAGE]) {
-        const { price, time } = gasPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE];
-        setCurrentGasPrice({
-          price,
-          formattedPrice: price * GWEI_UNIT,
-          time
-        });
-      }
-    });
-  }, []);
 
   return (
     <>
@@ -352,20 +327,6 @@ function Mint({ address }: any) {
           </Text>
         </TextContainer>
 
-        <Text size="lg">
-          Ethereum network fees:{' '}
-          {currentGasPrice
-            ? `$${formatCurrency(
-                getTransactionPrice(
-                  currentGasPrice?.price,
-                  gasLimit,
-                  // @ts-ignore
-                  rates[CRYPTO_CURRENCY_TO_KEY.ETH]
-                )
-              )} / ${currentGasPrice?.price} GWEI`
-            : 0}
-          <a href="/">EDIT</a>
-        </Text>
         <StyledButton variant="contained">Mint Now</StyledButton>
       </div>
     </>
