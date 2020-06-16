@@ -19,7 +19,6 @@ import BalanceTable from '../components/Table/BalanceTable';
 import { getBalancesWithRates } from './balancesHelpers';
 import IconText from '../components/IconText';
 import snxJSConnector from '../helpers/snxJSConnector';
-import { addBufferToGasLimit } from '../helpers/networkHelper';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 
 const Asset = styled.div``;
@@ -29,12 +28,12 @@ const StyledLinearProgress = styled(LinearProgress)`
     height: 15px;
     margin-bottom: 10px;
   }
-   & .MuiLinearProgress-ColorPrimary {
+  & .MuiLinearProgress-ColorPrimary {
     background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
     background-color: ${({ theme }) => theme.colors.secondary};
-  } 
+  }
 `;
 
 const StyledButton = styled(Button)`
@@ -47,6 +46,23 @@ const StyledButton = styled(Button)`
 
   &.MuiButton-root:hover {
     background-color: #8c94ff;
+  }
+`;
+
+const MaxButton = styled(Button)`
+  &.MuiButton-root {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: #ffffff;
+  }
+
+  &.MuiButton-root:hover {
+    background-color: #8c94ff;
+  }
+`;
+
+const StyledTextField = styled(TextField)`
+  &.MuiTextField-root {
+    width: auto;
   }
 `;
 
@@ -239,46 +255,6 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-const useGetGasEstimate = (
-  mintAmount: string,
-  issuableSynths: number,
-  setGasLimit: (gasLimit: number) => void
-) => {
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    if (!mintAmount) return;
-    const getGasEstimate = async () => {
-      setError(null);
-      let gasEstimate;
-      try {
-        const {
-          snxJS: { Synthetix }
-        } = snxJSConnector as any;
-        const parsedMintAmount = parseFloat(mintAmount);
-        if (!parsedMintAmount) throw new Error('Invalid amount');
-        if (parsedMintAmount <= 0 || parsedMintAmount > issuableSynths)
-          throw new Error('You cannot currently mint that much sUSD');
-        if (parsedMintAmount === issuableSynths) {
-          gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
-        } else {
-          gasEstimate = await Synthetix.contract.estimate.issueSynths(
-            // @ts-ignore
-            snxJSConnector.utils.parseEther(mintAmount.toString())
-          );
-        }
-        setGasLimit(addBufferToGasLimit(gasEstimate));
-      } catch (e) {
-        console.log(e);
-        const errorMessage = e && e.message;
-        setError(errorMessage);
-      }
-    };
-    getGasEstimate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mintAmount]);
-  return error;
-};
-
 function Mint({ address }: any) {
   const [mintAmount, setMintAmount] = useState('');
 
@@ -301,15 +277,33 @@ function Mint({ address }: any) {
         <Text size="sm">Confirm or enter the amount to mint</Text>
         <Grid container>
           <Grid item>
-            <Icon size="md" type="susd" />
-            <Text size="lg">sUSD</Text>
-            <TextField
-              label=""
-              value={mintAmount}
-              placeholder="0.00"
-              onChange={e => setMintAmount(e.target.value)}
-            />
-            <Button variant="contained">MAX</Button>
+            <Grid
+              item
+              container
+              spacing={2}
+              alignItems="center"
+              justify="flex-start"
+            >
+              <Grid item sm={2}>
+                <IconText
+                  iconSize="sm"
+                  textSize="lg"
+                  iconType="susd"
+                  text="sUSD"
+                />
+              </Grid>
+              <Grid item sm={8}>
+                <StyledTextField
+                  label=""
+                  value={mintAmount}
+                  placeholder="0.00"
+                  onChange={e => setMintAmount(e.target.value)}
+                />
+              </Grid>
+              <Grid item sm={2}>
+                <MaxButton variant="contained">MAX</MaxButton>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <TextContainer>
