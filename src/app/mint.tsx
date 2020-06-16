@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Stat from '../components/Stat';
 import Icon from '../components/Icon';
 import Grid from '@material-ui/core/Grid';
+
 import Section from '../components/Section';
 import {
   formatCurrency,
@@ -66,7 +67,9 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const StyledGrid = styled(Grid)``;
+const StyledGrid = styled(Grid)`
+  margin-top: 20px !important; 
+`;
 
 const TextContainer = styled.div`
   display: flex;
@@ -348,7 +351,7 @@ function Mint({ address }: any) {
 
 function MintPage({ address }: any) {
   return (
-    <StyledGrid container spacing={2}>
+    <StyledGrid container spacing={4}>
       <Grid item sm={6}>
         <Left />
       </Grid>
