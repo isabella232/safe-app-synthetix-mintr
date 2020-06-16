@@ -59,8 +59,5 @@
     "@types/styled-components": "^5.1.0",
     "react-docgen-typescript-loader": "^3.7.1",
     "typescript": "~3.9.3"
-  },
-  "resolutions": {
-    "@walletconnect/web3-provider": "^1.0.2"
   }
 }
