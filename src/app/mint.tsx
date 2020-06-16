@@ -28,15 +28,15 @@ const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
     margin-bottom: 10px;
-
-    &.MuiLinearProgress-barColorPrimary {
-      background-color: #008c73;
-    }
   }
-  &.MuiLinearProgress-colorPrimary {
+  & .MuiLinearProgress-ColorPrimary {
     background-color: #cecece;
   }
+  & .MuiLinearProgress-barColorPrimary {
+    background-color: #008c73;
+  }
 `;
+
 const StyledButton = styled(Button)`
   &.MuiButton-root {
     background-color: #727cff;
