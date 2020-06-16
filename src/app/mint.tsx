@@ -29,8 +29,8 @@ const StyledLinearProgress = styled(LinearProgress)`
     height: 15px;
     margin-bottom: 10px;
   }
-  & .MuiLinearProgress-ColorPrimary {
-    background-color: #cecece;
+  &.MuiLinearProgress-colorPrimary {
+    background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
     background-color: #008c73;
