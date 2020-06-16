@@ -257,14 +257,26 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
 
 function Mint({ address }: any) {
   const [mintAmount, setMintAmount] = useState('');
+  const [error, setError] = useState('');
 
   const sUSDBytes = bytesFormatter('sUSD');
   const {
+    issuableSynths,
     issuanceRatio,
     SNXPrice,
     debtBalance,
     snxBalance
   } = useGetIssuanceData(address, sUSDBytes);
+
+  useEffect(() => {
+    const parsedMintAmount = parseFloat(mintAmount);
+
+    if (parsedMintAmount <= 0 || parsedMintAmount > issuableSynths) {
+      setError('Cannot mint that much sUSD');
+    } else {
+      setError('');
+    }
+  }, [mintAmount, issuableSynths]);
 
   return (
     <>
@@ -292,16 +304,22 @@ function Mint({ address }: any) {
                   text="sUSD"
                 />
               </Grid>
-              <Grid item sm={8}>
+              <Grid item sm={7}>
                 <StyledTextField
                   label=""
                   value={mintAmount}
                   placeholder="0.00"
                   onChange={e => setMintAmount(e.target.value)}
+                  meta={{ error: error }}
                 />
               </Grid>
-              <Grid item sm={2}>
-                <MaxButton variant="contained">MAX</MaxButton>
+              <Grid item sm={3}>
+                <MaxButton
+                  variant="contained"
+                  onClick={() => setMintAmount(issuableSynths)}
+                >
+                  MAX
+                </MaxButton>
               </Grid>
             </Grid>
           </Grid>
