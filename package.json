@@ -61,6 +61,6 @@
     "typescript": "~3.9.3"
   },
   "resolutions": {
-    "@walletconnect/utils": "file:./src/libs/@walletconnect/utils"
+    "@walletconnect/web3-provider": "^1.0.2"
   }
 }
