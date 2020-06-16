@@ -19,7 +19,6 @@ import BalanceTable from '../components/Table/BalanceTable';
 import { getBalancesWithRates } from './balancesHelpers';
 import IconText from '../components/IconText';
 import snxJSConnector from '../helpers/snxJSConnector';
-import { addBufferToGasLimit } from '../helpers/networkHelper';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 
 const Asset = styled.div``;
@@ -236,46 +235,6 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   }, [walletAddress]);
 
   return data;
-};
-
-const useGetGasEstimate = (
-  mintAmount: string,
-  issuableSynths: number,
-  setGasLimit: (gasLimit: number) => void
-) => {
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    if (!mintAmount) return;
-    const getGasEstimate = async () => {
-      setError(null);
-      let gasEstimate;
-      try {
-        const {
-          snxJS: { Synthetix }
-        } = snxJSConnector as any;
-        const parsedMintAmount = parseFloat(mintAmount);
-        if (!parsedMintAmount) throw new Error('Invalid amount');
-        if (parsedMintAmount <= 0 || parsedMintAmount > issuableSynths)
-          throw new Error('You cannot currently mint that much sUSD');
-        if (parsedMintAmount === issuableSynths) {
-          gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
-        } else {
-          gasEstimate = await Synthetix.contract.estimate.issueSynths(
-            // @ts-ignore
-            snxJSConnector.utils.parseEther(mintAmount.toString())
-          );
-        }
-        setGasLimit(addBufferToGasLimit(gasEstimate));
-      } catch (e) {
-        console.log(e);
-        const errorMessage = e && e.message;
-        setError(errorMessage);
-      }
-    };
-    getGasEstimate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mintAmount]);
-  return error;
 };
 
 function Mint({ address }: any) {
