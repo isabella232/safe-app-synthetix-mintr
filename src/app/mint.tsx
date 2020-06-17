@@ -28,8 +28,6 @@ const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
     margin-bottom: 10px;
-  }
-  & .MuiLinearProgress-ColorPrimary {
     background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
@@ -292,7 +290,7 @@ function Mint({ address }: any) {
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
       <div>
-        <Text size="sm" strong>
+        <Text size="lg">
           Confirm or enter the amount to mint
         </Text>
         <Grid container>
