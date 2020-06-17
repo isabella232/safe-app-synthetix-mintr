@@ -68,13 +68,22 @@ const StyledTextField = styled(TextField)`
 `;
 
 const StyledGrid = styled(Grid)`
-  margin-top: 20px !important; 
+  margin-top: 4px !important;
 `;
 
 const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin: 0.8rem 0 3rem 0;
+`;
+
+const TableContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const TotalSnx = () => {
@@ -165,15 +174,7 @@ function Left() {
       </Grid>
 
       <Grid container>
-        <Grid
-          item
-          container
-          xs={12}
-          sm={6}
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
+        <Grid item container xs={12} sm={6} direction="column" justify="center">
           {['SNX', 'ETH'].map((asset: any) => (
             <Asset key={asset}>
               <IconText
@@ -192,11 +193,13 @@ function Left() {
         </Grid>
       </Grid>
 
-      <BalanceTable
-        rates={rates}
-        debtData={data.debtData}
-        walletBalancesWithRates={walletBalancesWithRates}
-      />
+      <TableContainer>
+        <BalanceTable
+          rates={rates}
+          debtData={data.debtData}
+          walletBalancesWithRates={walletBalancesWithRates}
+        />
+      </TableContainer>
     </>
   );
 }
@@ -289,7 +292,9 @@ function Mint({ address }: any) {
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
       <div>
-        <Text size="sm">Confirm or enter the amount to mint</Text>
+        <Text size="sm" strong>
+          Confirm or enter the amount to mint
+        </Text>
         <Grid container>
           <Grid item>
             <Grid
@@ -328,7 +333,7 @@ function Mint({ address }: any) {
           </Grid>
         </Grid>
         <TextContainer>
-          <Text size="lg">
+          <Text size="sm">
             Staking:{' '}
             {getStakingAmount({
               issuanceRatio,
@@ -337,13 +342,15 @@ function Mint({ address }: any) {
             })}{' '}
             SNX
           </Text>
-          <Text size="lg">
+          <Text size="sm">
             Estimated C-Ratio:{' '}
             {estimateCRatio({ SNXPrice, debtBalance, snxBalance, mintAmount })}%
           </Text>
         </TextContainer>
 
-        <StyledButton variant="contained">Mint Now</StyledButton>
+        <ButtonContainer>
+          <StyledButton variant="contained">Mint Now</StyledButton>
+        </ButtonContainer>
       </div>
     </>
   );
@@ -351,7 +358,7 @@ function Mint({ address }: any) {
 
 function MintPage({ address }: any) {
   return (
-    <StyledGrid container spacing={4}>
+    <StyledGrid container spacing={5}>
       <Grid item sm={6}>
         <Left />
       </Grid>

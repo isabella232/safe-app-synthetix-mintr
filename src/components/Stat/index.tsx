@@ -7,13 +7,13 @@ const Container = styled.div`
 `;
 
 const StyledTitle = styled(Title)`
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   margin: 10px;
   color: #333333;
 `;
 
 const StyledText = styled(Text)`
-  font-size: .9rem;
+  font-size: .8rem;
   margin: 0 0 24px 0;
   color: #333333;
 `;
