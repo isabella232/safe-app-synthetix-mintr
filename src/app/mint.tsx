@@ -21,6 +21,7 @@ import { getBalancesWithRates } from './balancesHelpers';
 import IconText from '../components/IconText';
 import snxJSConnector from '../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
+import numbro from 'numbro';
 
 const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
@@ -61,12 +62,12 @@ const MaxButton = styled(Button)`
 
 const StyledTextField = styled(TextField)`
   &.MuiTextField-root {
-    width: auto;
+    width: 100%;
   }
 `;
 
 const StyledGrid = styled(Grid)`
-  margin-top: 4px !important;
+  margin-top: 20px !important;
 `;
 
 const TextContainer = styled.div`
@@ -77,11 +78,6 @@ const TextContainer = styled.div`
 
 const TableContainer = styled.div`
   margin-top: 1rem;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 const TotalSnx = () => {
@@ -259,7 +255,7 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Mint({ address }: any) {
+function Mint({ address, appsSdk }: any) {
   const [mintAmount, setMintAmount] = useState('');
   const [error, setError] = useState('');
 
@@ -275,12 +271,43 @@ function Mint({ address }: any) {
   useEffect(() => {
     const parsedMintAmount = parseFloat(mintAmount);
 
-    if (parsedMintAmount <= 0 || parsedMintAmount > issuableSynths) {
+    if (parsedMintAmount <= 0) {
+      setError('Invalid amount');
+    } else if (parsedMintAmount > issuableSynths) {
       setError('Cannot mint that much sUSD');
     } else {
       setError('');
     }
   }, [mintAmount, issuableSynths]);
+
+  const handleMint = () => {
+    const {
+      // @ts-ignore
+      snxJS: { Synthetix }
+    } = snxJSConnector;
+    let data;
+    const parsedMintAmount = numbro(mintAmount).value();
+    if (!parsedMintAmount) {
+      return;
+    }
+    if (parsedMintAmount === issuableSynths) {
+      data = Synthetix.contract.interface.functions.issueMaxSynths.encode([]);
+    } else {
+      data = Synthetix.contract.interface.functions.issueSynths.encode([
+        // @ts-ignore
+        snxJSConnector.utils.parseEther(parsedMintAmount.toString())
+      ]);
+    }
+
+    const tx = {
+      // @ts-ignore
+      to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
+      value: 0,
+      data
+    };
+
+    appsSdk.sendTransactions([tx]);
+  };
 
   return (
     <>
@@ -290,44 +317,27 @@ function Mint({ address }: any) {
         description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
       />
       <div>
-        <Text size="lg">
-          Confirm or enter the amount to mint
-        </Text>
-        <Grid container>
-          <Grid item>
-            <Grid
-              item
-              container
-              spacing={2}
-              alignItems="center"
-              justify="flex-start"
+        <Text size="sm">Confirm or enter the amount to mint</Text>
+        <Grid container spacing={2} alignItems="center" justify="flex-start">
+          <Grid item sm={2}>
+            <IconText iconSize="sm" textSize="lg" iconType="susd" text="sUSD" />
+          </Grid>
+          <Grid item sm={7}>
+            <StyledTextField
+              label=""
+              value={mintAmount}
+              placeholder="0.00"
+              onChange={e => setMintAmount(e.target.value)}
+              meta={{ error: error }}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <MaxButton
+              variant="contained"
+              onClick={() => setMintAmount(issuableSynths)}
             >
-              <Grid item sm={2}>
-                <IconText
-                  iconSize="sm"
-                  textSize="lg"
-                  iconType="susd"
-                  text="sUSD"
-                />
-              </Grid>
-              <Grid item sm={7}>
-                <StyledTextField
-                  label=""
-                  value={mintAmount}
-                  placeholder="0.00"
-                  onChange={e => setMintAmount(e.target.value)}
-                  meta={{ error: error }}
-                />
-              </Grid>
-              <Grid item sm={3}>
-                <MaxButton
-                  variant="contained"
-                  onClick={() => setMintAmount(issuableSynths)}
-                >
-                  MAX
-                </MaxButton>
-              </Grid>
-            </Grid>
+              MAX
+            </MaxButton>
           </Grid>
         </Grid>
         <TextContainer>
@@ -346,22 +356,26 @@ function Mint({ address }: any) {
           </Text>
         </TextContainer>
 
-        <ButtonContainer>
-          <StyledButton variant="contained">Mint Now</StyledButton>
-        </ButtonContainer>
+        <StyledButton
+          variant="contained"
+          onClick={handleMint}
+          disabled={!!error || !numbro(mintAmount).value()}
+        >
+          Mint Now
+        </StyledButton>
       </div>
     </>
   );
 }
 
-function MintPage({ address }: any) {
+function MintPage({ address, appsSdk }: any) {
   return (
     <StyledGrid container spacing={5}>
       <Grid item sm={6}>
         <Left />
       </Grid>
       <Grid item sm={6}>
-        <Mint address={address} />
+        <Mint address={address} appsSdk={appsSdk} />
       </Grid>
     </StyledGrid>
   );

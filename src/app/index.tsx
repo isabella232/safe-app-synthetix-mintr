@@ -64,7 +64,7 @@ const App = () => {
   const renderSelectedTab = () => {
     switch (selected) {
       case '1':
-        return <Mint address={safeInfo!.safeAddress} />;
+        return <Mint address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
       default:
         return null;
     }
