@@ -21,6 +21,7 @@ import { getBalancesWithRates } from './balancesHelpers';
 import IconText from '../components/IconText';
 import snxJSConnector from '../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
+import numbro from 'numbro';
 
 const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
@@ -258,7 +259,7 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Mint({ address }: any) {
+function Mint({ address, appsSdk }: any) {
   const [mintAmount, setMintAmount] = useState('');
   const [error, setError] = useState('');
 
@@ -274,12 +275,43 @@ function Mint({ address }: any) {
   useEffect(() => {
     const parsedMintAmount = parseFloat(mintAmount);
 
-    if (parsedMintAmount <= 0 || parsedMintAmount > issuableSynths) {
+    if (parsedMintAmount <= 0) {
+      setError('Invalid amount');
+    } else if (parsedMintAmount > issuableSynths) {
       setError('Cannot mint that much sUSD');
     } else {
       setError('');
     }
   }, [mintAmount, issuableSynths]);
+
+  const handleMint = () => {
+    const {
+      // @ts-ignore
+      snxJS: { Synthetix }
+    } = snxJSConnector;
+    let data;
+    const parsedMintAmount = numbro(mintAmount).value();
+    if (!parsedMintAmount) {
+      return;
+    }
+    if (parsedMintAmount === issuableSynths) {
+      data = Synthetix.contract.interface.functions.issueMaxSynths.encode([]);
+    } else {
+      data = Synthetix.contract.interface.functions.issueSynths.encode([
+        // @ts-ignore
+        snxJSConnector.utils.parseEther(parsedMintAmount.toString())
+      ]);
+    }
+
+    const tx = {
+      // @ts-ignore
+      to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
+      value: 0,
+      data
+    };
+
+    appsSdk.sendTransactions([tx]);
+  };
 
   return (
     <>
@@ -328,20 +360,26 @@ function Mint({ address }: any) {
           </Text>
         </TextContainer>
 
-        <StyledButton variant="contained">Mint Now</StyledButton>
+        <StyledButton
+          variant="contained"
+          onClick={handleMint}
+          disabled={!!error || !numbro(mintAmount).value()}
+        >
+          Mint Now
+        </StyledButton>
       </div>
     </>
   );
 }
 
-function MintPage({ address }: any) {
+function MintPage({ address, appsSdk }: any) {
   return (
     <StyledGrid container spacing={4}>
       <Grid item sm={6}>
         <Left />
       </Grid>
       <Grid item sm={6}>
-        <Mint address={address} />
+        <Mint address={address} appsSdk={appsSdk} />
       </Grid>
     </StyledGrid>
   );
