@@ -3,6 +3,7 @@ import initSdk, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
 import { Tab, TabItem } from '@gnosis.pm/safe-react-components';
 import { ethers } from 'ethers';
 import Mint from './mint';
+import Burn from './burn';
 import RatesContextProvider from './RatesProvider';
 import snxJSConnector from '../helpers/snxJSConnector';
 import BalancesContextProvider from './BalancesProvider';
@@ -65,6 +66,8 @@ const App = () => {
     switch (selected) {
       case '1':
         return <Mint address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
+      case '2':
+        return <Burn address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
       default:
         return null;
     }

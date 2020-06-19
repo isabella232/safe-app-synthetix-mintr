@@ -1,5 +1,5 @@
 import { toNumber, isFinite, isNil } from 'lodash';
-import { formatCurrency } from '../helpers/formatters';
+import { formatCurrency } from '../../helpers/formatters';
 
 export function getStakingAmount({ issuanceRatio, mintAmount, SNXPrice }) {
   if (!mintAmount || !issuanceRatio || !SNXPrice) return '0';

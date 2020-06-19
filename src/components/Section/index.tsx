@@ -12,6 +12,7 @@ const StyledTitle = styled(Title)`
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.secondary};
   line-height: 25px;
+  letter-spacing: 2px;
 `;
 
 const StyledText = styled(Text)`
@@ -28,7 +29,7 @@ type Props = {
 function Section({ icon, name, description }: Props) {
   return (
     <StyledGrid container justify="center" alignItems="center">
-      <Grid item xs={2} sm={2}>
+      <Grid item xs={3} sm={3}>
         {icon}
       </Grid>
       <Grid item xs={3} sm={3}>
