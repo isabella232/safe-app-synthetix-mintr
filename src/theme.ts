@@ -12,11 +12,11 @@ const copyTheme: NewTheme = { ...theme };
 
 copyTheme.colors.primary = '#727cff';
 copyTheme.colors.primaryHover = '#00c58a';
-copyTheme.colors.primaryLight = '#d5f6ed';
+copyTheme.colors.primaryLight = '#E3E3E3';
 
 copyTheme.colors.secondary = '#56bb98';
 copyTheme.colors.secondaryHover = '#8253dd';
-copyTheme.colors.secondaryLight = 'ebe1fb';
+copyTheme.colors.secondaryLight = '#ededed';
 
 copyTheme.icons.size = { ...copyTheme.icons.size, lg: '64' };
 

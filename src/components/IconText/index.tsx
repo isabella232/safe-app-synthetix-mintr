@@ -24,9 +24,16 @@ const StyledIconText = styled.div`
 /**
  * The `IconText` renders an icon next to a text
  */
-function IconText({ iconSize, textSize, iconType, text, color }: Props) {
+function IconText({
+  iconSize,
+  textSize,
+  iconType,
+  text,
+  color,
+  ...rest
+}: Props) {
   return (
-    <StyledIconText>
+    <StyledIconText {...rest}>
       <Icon size={iconSize} type={iconType} color={color} />
       <Text size={textSize} color={color}>
         {text}
