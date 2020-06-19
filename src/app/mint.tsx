@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import Stat from '../components/Stat';
 import Icon from '../components/Icon';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+
 
 import Section from '../components/Section';
 import {
@@ -36,12 +38,20 @@ const StyledLinearProgress = styled(LinearProgress)`
   }
 `;
 
+const StyledPaper = styled(Paper)`
+  &.MuiPaper-root {
+    padding: 16px;
+  }
+`;
+
 const StyledButton = styled(Button)`
   &.MuiButton-root {
     background-color: ${({ theme }) => theme.colors.primary};
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
+    width: 100%;
+    max-width: 370px;
   }
 
   &.MuiButton-root:hover {
@@ -66,6 +76,14 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
+const StyledIconText = styled(IconText)`
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primaryLight};
+  padding: 4px;
+  border-radius: 4px 0 0 4px;
+  width: 100%;
+ `;
+
 const StyledGrid = styled(Grid)`
   margin-top: 20px !important;
 `;
@@ -73,7 +91,7 @@ const StyledGrid = styled(Grid)`
 const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 0.8rem 0 3rem 0;
+  margin: 0.8rem 0 2rem 0;
 `;
 
 const TableContainer = styled.div`
@@ -314,17 +332,17 @@ function Mint({ address, appsSdk }: any) {
       <Section
         icon={<Icon size="md" type="mint" />}
         name="Mint"
-        description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards"
+        description="Mint sUSD by staking your SNX. This gives you a Collateralization Rate and a debt, allowing you to earn staking rewards."
       />
-      <div>
-        <Text size="sm">Confirm or enter the amount to mint</Text>
+      <StyledPaper elevation={3}>
+        <Text size="lg">Confirm or enter the amount to mint</Text>
         <Grid container spacing={2} alignItems="center" justify="flex-start">
           <Grid item sm={2}>
-            <IconText iconSize="sm" textSize="lg" iconType="susd" text="sUSD" />
+            <StyledIconText iconSize="sm" textSize="lg" iconType="susd" text="sUSD" />
           </Grid>
           <Grid item sm={7}>
             <StyledTextField
-              label=""
+              label="Amount"
               value={mintAmount}
               placeholder="0.00"
               onChange={e => setMintAmount(e.target.value)}
@@ -363,7 +381,7 @@ function Mint({ address, appsSdk }: any) {
         >
           Mint Now
         </StyledButton>
-      </div>
+      </StyledPaper>
     </>
   );
 }

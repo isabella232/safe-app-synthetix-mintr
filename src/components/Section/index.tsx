@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { Text, Title } from '@gnosis.pm/safe-react-components';
 
 const StyledGrid = styled(Grid)`
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const StyledTitle = styled(Title)`
@@ -27,11 +27,11 @@ type Props = {
 
 function Section({ icon, name, description }: Props) {
   return (
-    <StyledGrid container>
-      <Grid item container xs={6} sm={6} justify="center" alignItems="center">
+    <StyledGrid container justify="center" alignItems="center">
+      <Grid item xs={2} sm={2}>
         {icon}
       </Grid>
-      <Grid item xs={6} sm={6} justify="center">
+      <Grid item xs={3} sm={3}>
         <StyledTitle size="lg">{name}</StyledTitle>
       </Grid>
       <Grid item xs={12} sm={12}>
