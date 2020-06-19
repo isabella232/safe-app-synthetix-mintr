@@ -142,7 +142,7 @@ function Claim({ address, appsSdk }: any) {
 
     const tx = {
       // @ts-ignore
-      to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
+      to: snxJSConnector.utils.contractSettings.addressList.FeePool,
       value: 0,
       data: FeePool.contract.interface.functions.claimFees.encode([])
     };
