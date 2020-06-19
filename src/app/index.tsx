@@ -4,6 +4,7 @@ import { Tab, TabItem } from '@gnosis.pm/safe-react-components';
 import { ethers } from 'ethers';
 import Mint from './mint';
 import Burn from './burn';
+import Claim from './claim';
 import RatesContextProvider from './RatesProvider';
 import snxJSConnector from '../helpers/snxJSConnector';
 import BalancesContextProvider from './BalancesProvider';
@@ -68,6 +69,8 @@ const App = () => {
         return <Mint address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
       case '2':
         return <Burn address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
+      case '3':
+        return <Claim address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
       default:
         return null;
     }

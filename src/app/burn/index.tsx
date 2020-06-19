@@ -167,7 +167,7 @@ const useGetDebtData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Mint({ address, appsSdk }: any) {
+function Burn({ address, appsSdk }: any) {
   const [burnAmount, setBurnAmount] = useState('');
   const [waitingPeriod, setWaitingPeriod] = useState(0);
   const [issuanceDelay, setIssuanceDelay] = useState(0);
@@ -388,7 +388,7 @@ function BurnPage({ address, appsSdk }: any) {
         <Balance />
       </StyledGridItem>
       <Grid item sm={6}>
-        <Mint address={address} appsSdk={appsSdk} />
+        <Burn address={address} appsSdk={appsSdk} />
       </Grid>
     </StyledGrid>
   );

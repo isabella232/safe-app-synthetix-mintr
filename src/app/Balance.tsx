@@ -17,10 +17,10 @@ const Asset = styled.div``;
 const StyledTotalSnx = styled(Grid)``;
 
 const StyledText = styled(Text)`
-  font-size: .7em;
+  font-size: 0.7em;
 
   @media screen and (max-width: 800px) {
-    font-size: .65em;
+    font-size: 0.65em;
   }
 `;
 
@@ -51,7 +51,9 @@ const TotalSnx = () => {
   return (
     <StyledTotalSnx container>
       <Grid item xs={6}>
-        <Text size="sm">TOTAL:</Text>
+        <Text size="sm" strong>
+          TOTAL SNX
+        </Text>
       </Grid>
       <Grid item xs={6}>
         <Text size="sm" strong>
