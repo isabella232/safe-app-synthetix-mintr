@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { parseBytes32String } from 'ethers/utils';
-import snxJSConnector from '../helpers/snxJSConnector';
+import snxJSConnector from '../helpers/snxJSConnector.js';
 import { bytesFormatter, bigNumberFormatter } from '../helpers/formatters';
 import { CRYPTO_CURRENCY_TO_KEY } from '../constants/currency';
 import { fetchData } from './fetchData';

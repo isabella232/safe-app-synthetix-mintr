@@ -9,7 +9,7 @@ import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bytesFormatter, bigNumberFormatter } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import snxJSConnector from '../../helpers/snxJSConnector.js';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 import Balance from '../Balance';
 
@@ -20,7 +20,7 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledGridItem = styled(Grid)`
-    padding-right: 24px;
+  padding-right: 24px;
 `;
 
 const StyledButton = styled(Button)`

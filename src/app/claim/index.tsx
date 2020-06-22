@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import snxJSConnector from '../../helpers/snxJSConnector.js';
 import Balance from '../Balance';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
 

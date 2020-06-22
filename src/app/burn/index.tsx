@@ -14,7 +14,7 @@ import {
   secondsToTime
 } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import snxJSConnector from '../../helpers/snxJSConnector.js';
 import Balance from '../Balance';
 import { differenceInSeconds, addSeconds } from 'date-fns';
 
