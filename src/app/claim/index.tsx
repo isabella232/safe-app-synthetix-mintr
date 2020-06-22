@@ -135,6 +135,9 @@ function Claim() {
     dataIsLoading
   } = useGetFeeData(safeInfo.safeAddress);
 
+  const hasFeesAvailable =
+    feesAvailable && (feesAvailable[0] || feesAvailable[1]);
+
   const handleClaim = async () => {
     const {
       snxJS: { FeePool }
@@ -190,7 +193,7 @@ function Claim() {
           <SubmitButton
             variant="contained"
             onClick={handleClaim}
-            disabled={!feesAreClaimable || dataIsLoading}
+            disabled={!feesAreClaimable || !hasFeesAvailable || dataIsLoading}
           >
             CLAIM NOW
           </SubmitButton>

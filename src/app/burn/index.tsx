@@ -251,7 +251,7 @@ function Burn() {
     if (parsedBurnAmount <= 0) {
       setError('Invalid amount');
     } else if (parsedBurnAmount > maxBurnAmount) {
-      setError('You do not have that much sUSD to burn');
+      setError('Not enough sUSD to burn');
     } else {
       setError('');
     }
