@@ -5,11 +5,14 @@ import theme from './theme';
 
 import GlobalStyles from './global';
 import App from './app';
+import SafeContextProvider from './app/SafeProvider';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <GlobalStyles />
-    <App />
+    <SafeContextProvider>
+      <App />
+    </SafeContextProvider>
   </ThemeProvider>,
   document.getElementById('root')
 );

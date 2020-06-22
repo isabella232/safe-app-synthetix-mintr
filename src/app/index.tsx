@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import initSdk, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
-import { Tab, TabItem } from '@gnosis.pm/safe-react-components';
+import React, { useEffect, useState, useContext } from 'react';
+import { Tab, TabItem, Loader } from '@gnosis.pm/safe-react-components';
 import { ethers } from 'ethers';
 import Mint from './mint';
 import Burn from './burn';
@@ -9,21 +8,56 @@ import RatesContextProvider from './RatesProvider';
 import SnxJSConnector from '../helpers/snxJSConnector';
 import BalancesContextProvider from './BalancesProvider';
 import IconText from '../components/IconText';
+import { SafeContext } from './SafeProvider';
+
+const getItems = (selectedItem: string): Array<TabItem> => {
+  return [
+    {
+      id: '1',
+      label: 'MINT',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="mint"
+          textSize="sm"
+          color={selectedItem === '2' ? 'primary' : 'text'}
+          text="MINT"
+        />
+      )
+    },
+    {
+      id: '2',
+      label: 'BURN',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="burn"
+          textSize="sm"
+          color={selectedItem === '2' ? 'primary' : 'text'}
+          text="BURN"
+        />
+      )
+    },
+    {
+      id: '3',
+      label: 'CLAIM',
+      customContent: (
+        <IconText
+          iconSize="sm"
+          iconType="claim"
+          textSize="sm"
+          color={selectedItem === '3' ? 'primary' : 'text'}
+          text="CLAIM"
+        />
+      )
+    }
+  ];
+};
 
 const App = () => {
-  const [appsSdk] = useState(initSdk());
-  const [safeInfo, setSafeInfo] = useState<SafeInfo>();
+  const { safeInfo, setSafeInfo } = useContext(SafeContext);
   const [appInitialized, setAppInitialized] = useState(false);
   const [selected, setSelected] = useState('1');
-
-  // config safe connector
-  useEffect(() => {
-    appsSdk.addListeners({
-      onSafeInfo: setSafeInfo
-    });
-
-    return () => appsSdk.removeListeners();
-  }, [appsSdk]);
 
   useEffect(() => {
     if (process.env.REACT_APP_LOCAL_WEB3_PROVIDER) {
@@ -42,7 +76,7 @@ const App = () => {
       };
       init();
     }
-  }, []);
+  }, [setSafeInfo]);
 
   useEffect(() => {
     if (!safeInfo) {
@@ -66,72 +100,32 @@ const App = () => {
   const renderSelectedTab = () => {
     switch (selected) {
       case '1':
-        return <Mint address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
+        return <Mint />;
       case '2':
-        return <Burn address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
+        return <Burn />;
       case '3':
-        return <Claim address={safeInfo!.safeAddress} appsSdk={appsSdk} />;
+        return <Claim />;
       default:
         return null;
     }
   };
 
-  const items: TabItem[] = [
-    {
-      id: '1',
-      label: 'MINT',
-      customContent: (
-        <IconText
-          iconSize="sm"
-          iconType="mint"
-          textSize="sm"
-          color={selected === '2' ? 'primary' : 'text'}
-          text="MINT"
-        />
-      )
-    },
-    {
-      id: '2',
-      label: 'BURN',
-      customContent: (
-        <IconText
-          iconSize="sm"
-          iconType="burn"
-          textSize="sm"
-          color={selected === '2' ? 'primary' : 'text'}
-          text="BURN"
-        />
-      )
-    },
-    {
-      id: '3',
-      label: 'CLAIM',
-      customContent: (
-        <IconText
-          iconSize="sm"
-          iconType="claim"
-          textSize="sm"
-          color={selected === '3' ? 'primary' : 'text'}
-          text="CLAIM"
-        />
-      )
-    }
-  ];
-
   return appInitialized ? (
     <RatesContextProvider>
-      <BalancesContextProvider address={safeInfo!.safeAddress}>
+      <BalancesContextProvider>
         <Tab
           onChange={setSelected}
           selectedTab={selected}
           variant="contained"
-          items={items}
+          items={getItems(selected)}
           fullWidth
         />
         {renderSelectedTab()}
       </BalancesContextProvider>
     </RatesContextProvider>
-  ) : null;
+  ) : (
+    <Loader size="lg" />
+  );
 };
 
 export default App;

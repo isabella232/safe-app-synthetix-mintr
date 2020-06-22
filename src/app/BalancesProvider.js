@@ -1,9 +1,10 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer, useContext } from 'react';
 import { parseBytes32String } from 'ethers/utils';
 import { snxJSConnector } from '../helpers/snxJSConnector';
 import { bytesFormatter, bigNumberFormatter } from '../helpers/formatters';
 import { CRYPTO_CURRENCY_TO_KEY } from '../constants/currency';
 import { fetchData } from './fetchData';
+import { SafeContext } from './SafeProvider';
 
 export const fetchBalances = async walletAddress => {
   if (!walletAddress) throw new Error('wallet address is needed');
@@ -65,28 +66,31 @@ function reducer(state, action) {
 
 export const BalancesContext = createContext({});
 
-function BalancesContextProvider({ address, children }) {
+function BalancesContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, {});
+  const {
+    safeInfo: { safeAddress }
+  } = useContext(SafeContext);
 
   useEffect(() => {
-    if (!address) {
+    if (!safeAddress) {
       return;
     }
 
-    fetchBalances(address).then(balances => {
+    fetchBalances(safeAddress).then(balances => {
       dispatch({
         type: 'balancesReady',
         payload: balances
       });
     });
 
-    fetchData(address).then(data => {
+    fetchData(safeAddress).then(data => {
       dispatch({
         type: 'dataReady',
         payload: data
       });
     });
-  }, [address]);
+  }, [safeAddress]);
 
   return (
     <BalancesContext.Provider value={state}>

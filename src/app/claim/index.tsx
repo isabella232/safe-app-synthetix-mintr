@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Text } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
@@ -10,6 +10,7 @@ import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
 import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
+import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -125,13 +126,14 @@ const useGetFeeData = (walletAddress: string): Data => {
   return data;
 };
 
-function Claim({ address, appsSdk }: any) {
+function Claim() {
+  const { safeInfo, appsSdk } = useContext(SafeContext);
   const {
     closeIn,
     feesAreClaimable,
     feesAvailable,
     dataIsLoading
-  } = useGetFeeData(address);
+  } = useGetFeeData(safeInfo.safeAddress);
 
   const handleClaim = async () => {
     const {
@@ -202,14 +204,14 @@ function Claim({ address, appsSdk }: any) {
   );
 }
 
-function ClaimPage({ address, appsSdk }: any) {
+function ClaimPage() {
   return (
     <StyledGrid container>
       <StyledGridItem item sm={6}>
         <Balance />
       </StyledGridItem>
       <Grid item sm={6}>
-        <Claim address={address} appsSdk={appsSdk} />
+        <Claim />
       </Grid>
     </StyledGrid>
   );

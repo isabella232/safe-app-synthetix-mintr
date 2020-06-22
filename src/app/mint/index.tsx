@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Text, TextField } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ import IconText from '../../components/IconText';
 import { snxJSConnector } from '../../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 import Balance from '../Balance';
+import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -133,7 +134,8 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Mint({ address, appsSdk }: any) {
+function Mint() {
+  const { safeInfo, appsSdk } = useContext(SafeContext);
   const [mintAmount, setMintAmount] = useState('');
   const [error, setError] = useState('');
 
@@ -144,7 +146,7 @@ function Mint({ address, appsSdk }: any) {
     SNXPrice,
     debtBalance,
     snxBalance
-  } = useGetIssuanceData(address, sUSDBytes);
+  } = useGetIssuanceData(safeInfo.safeAddress, sUSDBytes);
 
   useEffect(() => {
     const parsedMintAmount = parseFloat(mintAmount);
@@ -248,14 +250,14 @@ function Mint({ address, appsSdk }: any) {
   );
 }
 
-function MintPage({ address, appsSdk }: any) {
+function MintPage() {
   return (
     <StyledGrid container>
       <StyledGridItem item sm={6}>
         <Balance />
       </StyledGridItem>
       <Grid item sm={6}>
-        <Mint address={address} appsSdk={appsSdk} />
+        <Mint />
       </Grid>
     </StyledGrid>
   );
