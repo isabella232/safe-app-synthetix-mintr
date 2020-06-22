@@ -9,7 +9,7 @@ import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bytesFormatter, bigNumberFormatter } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector.js';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 import Balance from '../Balance';
 
@@ -95,7 +95,6 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   });
   const SNXBytes = bytesFormatter('SNX');
 
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -161,7 +160,6 @@ function Mint({ address, appsSdk }: any) {
 
   const handleMint = () => {
     const {
-      // @ts-ignore
       snxJS: { Synthetix }
     } = snxJSConnector;
     let data;
@@ -173,13 +171,11 @@ function Mint({ address, appsSdk }: any) {
       data = Synthetix.contract.interface.functions.issueMaxSynths.encode([]);
     } else {
       data = Synthetix.contract.interface.functions.issueSynths.encode([
-        // @ts-ignore
         snxJSConnector.utils.parseEther(parsedMintAmount.toString())
       ]);
     }
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
       value: 0,
       data

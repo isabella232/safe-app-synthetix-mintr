@@ -1,3 +1,10 @@
+type Contract = {
+  addresses: {
+    [key: number]: string;
+  };
+  abi: Array<any>;
+};
+
 export default {
   addresses: {
     1: '0x95A6a3f44a70172E7d50a9e28c85Dfd712756B8C',
@@ -80,4 +87,4 @@ export default {
       type: 'constructor'
     }
   ]
-};
+} as Contract;

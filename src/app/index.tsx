@@ -6,7 +6,7 @@ import Mint from './mint';
 import Burn from './burn';
 import Claim from './claim';
 import RatesContextProvider from './RatesProvider';
-import snxJSConnector from '../helpers/snxJSConnector.js';
+import SnxJSConnector from '../helpers/snxJSConnector';
 import BalancesContextProvider from './BalancesProvider';
 import IconText from '../components/IconText';
 
@@ -51,7 +51,7 @@ const App = () => {
     const init = async () => {
       const provider = ethers.getDefaultProvider(safeInfo.network);
       const network = await provider.getNetwork();
-      snxJSConnector.setContractSettings({
+      SnxJSConnector.init({
         networkId: network.chainId,
         network: network.name,
         provider

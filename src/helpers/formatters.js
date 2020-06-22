@@ -1,5 +1,5 @@
 import numbro from 'numbro';
-import snxJSConnector from './snxJSConnector.js';
+import { snxJSConnector } from './snxJSConnector';
 
 export const formatCurrency = (value, decimals = 2) => {
   if (!value) return 0;

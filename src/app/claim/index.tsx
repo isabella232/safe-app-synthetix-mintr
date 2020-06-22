@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
-import snxJSConnector from '../../helpers/snxJSConnector.js';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
 
@@ -86,7 +86,6 @@ const useGetFeeData = (walletAddress: string): Data => {
     dataIsLoading: false
   });
 
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -136,12 +135,10 @@ function Claim({ address, appsSdk }: any) {
 
   const handleClaim = async () => {
     const {
-      // @ts-ignore
       snxJS: { FeePool }
     } = snxJSConnector;
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.FeePool,
       value: 0,
       data: FeePool.contract.interface.functions.claimFees.encode([])

@@ -14,7 +14,7 @@ import {
   secondsToTime
 } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector.js';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { differenceInSeconds, addSeconds } from 'date-fns';
 
@@ -112,7 +112,6 @@ const useGetDebtData = (walletAddress: string, sUSDBytes: any): Data => {
     debtEscrow: 0
   });
   const SNXBytes = bytesFormatter('SNX');
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -186,7 +185,6 @@ function Burn({ address, appsSdk }: any) {
 
   const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
     const {
-      // @ts-ignore
       snxJS: { Exchanger }
     } = snxJSConnector;
     try {
@@ -203,7 +201,6 @@ function Burn({ address, appsSdk }: any) {
 
   const getIssuanceDelay = useCallback(async () => {
     const {
-      // @ts-ignore
       snxJS: { Issuer }
     } = snxJSConnector;
     try {
@@ -260,7 +257,6 @@ function Burn({ address, appsSdk }: any) {
 
   const handleBurn = async () => {
     const {
-      // @ts-ignore
       snxJS: { Synthetix, Issuer }
     } = snxJSConnector;
     let data;
@@ -277,7 +273,6 @@ function Burn({ address, appsSdk }: any) {
         throw new Error('Waiting period to burn is still ongoing');
 
       data = Synthetix.contract.interface.functions.burnSynths.encode([
-        // @ts-ignore
         snxJSConnector.utils.parseEther(parsedBurnAmount.toString())
       ]);
     } catch (error) {
@@ -286,7 +281,6 @@ function Burn({ address, appsSdk }: any) {
     }
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
       value: 0,
       data
