@@ -48,6 +48,8 @@ const TotalSnx = () => {
     data?.debtData?.targetCRatio &&
     snxBalance *
       Math.min(1, data?.debtData?.currentCRatio / data?.debtData?.targetCRatio);
+
+  const totalEscrow = data?.escrowData?.reward + data?.escrowData?.tokenSale;
   return (
     <StyledTotalSnx container>
       <Grid item xs={6}>
@@ -94,6 +96,23 @@ const TotalSnx = () => {
           variant="determinate"
           color="primary"
           value={Math.max(100 * (snxLocked / snxBalance), 1)}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <StyledText size="sm">
+          Escrowed: {formatCurrency(totalEscrow)}
+        </StyledText>
+      </Grid>
+      <Grid item xs={6}>
+        <StyledText size="sm">
+          Not escrowed: {formatCurrency(snxBalance - totalEscrow)}
+        </StyledText>
+      </Grid>
+      <Grid item xs={12}>
+        <StyledLinearProgress
+          variant="determinate"
+          color="primary"
+          value={Math.max(100 * (totalEscrow / snxBalance), 1)}
         />
       </Grid>
     </StyledTotalSnx>
