@@ -1,5 +1,5 @@
 import { addSeconds } from 'date-fns';
-import snxJSConnector from '../helpers/snxJSConnector';
+import { snxJSConnector } from '../helpers/snxJSConnector';
 
 import { bytesFormatter, bigNumberFormatter } from '../helpers/formatters';
 
