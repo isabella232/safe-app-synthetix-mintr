@@ -14,7 +14,9 @@ import { CRYPTO_CURRENCY_TO_KEY } from '../constants/currency';
 
 const Asset = styled.div``;
 
-const StyledTotalSnx = styled(Grid)``;
+const StyledTotalSnx = styled(Grid)`
+  margin-top: 16px;
+`;
 
 const StyledText = styled(Text)`
   font-size: 0.7em;
@@ -28,6 +30,7 @@ const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
     margin-bottom: 10px;
+    margin-top: 10px;
     background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
@@ -52,17 +55,6 @@ const TotalSnx = () => {
   const totalEscrow = data?.escrowData?.reward + data?.escrowData?.tokenSale;
   return (
     <StyledTotalSnx container>
-      <Grid item xs={6}>
-        <Text size="sm" strong>
-          TOTAL SNX
-        </Text>
-      </Grid>
-      <Grid item xs={6}>
-        <Text size="sm" strong>
-          {formatCurrency(snxBalance) || 0} SNX
-        </Text>
-      </Grid>
-      <Divider />
       <Grid item xs={6}>
         <StyledText size="sm">
           Locked:{' '}
@@ -123,6 +115,7 @@ function Balance() {
   const rates: any = useContext(RatesContext);
   const { balances = {}, data = {} }: any = useContext(BalancesContext);
   const walletBalancesWithRates = getBalancesWithRates(rates, balances);
+  const snxBalance = balances[CRYPTO_CURRENCY_TO_KEY.SNX];
   const currentRatio = data?.debtData?.currentCRatio
     ? Math.round(100 / data?.debtData?.currentCRatio)
     : 0;
@@ -147,8 +140,14 @@ function Balance() {
         </Grid>
       </Grid>
 
-      <Grid container>
-        <Grid item container xs={12} sm={6} direction="column" justify="center">
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs={12} sm={6}>
+          <Text size="sm" strong>
+            TOTAL: {formatCurrency(snxBalance) || 0} SNX
+          </Text>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
           {['SNX', 'ETH'].map((asset: any) => (
             <Asset key={asset}>
               <IconText
@@ -161,8 +160,10 @@ function Balance() {
             </Asset>
           ))}
         </Grid>
-
-        <Grid item xs={12} sm={6}>
+      </Grid>
+      
+      <Grid container>
+        <Grid item xs={12} sm={12}>
           <TotalSnx />
         </Grid>
       </Grid>
