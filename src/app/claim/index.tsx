@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Text } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
@@ -7,9 +7,10 @@ import Paper from '@material-ui/core/Paper';
 import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
+import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -18,11 +19,11 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledGridBalance = styled(Grid)`
-    padding-right: 24px;
+  padding-right: 24px;
 `;
 
 const StyledGridSNX = styled(Grid)`
-    padding-right: 6px;
+  padding-right: 6px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -33,7 +34,7 @@ const SubmitButton = styled(Button)`
     padding: 16px 24px;
     min-width: 340px;
   }
-  
+
   @media screen and (max-width: 900px) {
     width: 100%;
   }
@@ -94,7 +95,6 @@ const useGetFeeData = (walletAddress: string): Data => {
     dataIsLoading: false
   });
 
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -134,22 +134,24 @@ const useGetFeeData = (walletAddress: string): Data => {
   return data;
 };
 
-function Claim({ address, appsSdk }: any) {
+function Claim() {
+  const { safeInfo, appsSdk } = useContext(SafeContext);
   const {
     closeIn,
     feesAreClaimable,
     feesAvailable,
     dataIsLoading
-  } = useGetFeeData(address);
+  } = useGetFeeData(safeInfo.safeAddress);
+
+  const hasFeesAvailable =
+    feesAvailable && (feesAvailable[0] || feesAvailable[1]);
 
   const handleClaim = async () => {
     const {
-      // @ts-ignore
       snxJS: { FeePool }
     } = snxJSConnector;
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.FeePool,
       value: 0,
       data: FeePool.contract.interface.functions.claimFees.encode([])
@@ -199,7 +201,7 @@ function Claim({ address, appsSdk }: any) {
           <SubmitButton
             variant="contained"
             onClick={handleClaim}
-            disabled={!feesAreClaimable || dataIsLoading}
+            disabled={!feesAreClaimable || !hasFeesAvailable || dataIsLoading}
           >
             CLAIM NOW
           </SubmitButton>
@@ -213,14 +215,14 @@ function Claim({ address, appsSdk }: any) {
   );
 }
 
-function ClaimPage({ address, appsSdk }: any) {
+function ClaimPage() {
   return (
     <StyledGrid container>
       <StyledGridBalance item sm={5}>
         <Balance />
       </StyledGridBalance>
       <StyledGridSNX item sm={7}>
-        <Claim address={address} appsSdk={appsSdk} />
+        <Claim />
       </StyledGridSNX>
     </StyledGrid>
   );

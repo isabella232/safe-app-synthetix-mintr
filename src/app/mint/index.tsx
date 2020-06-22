@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Text, TextField } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
@@ -9,9 +9,10 @@ import Section from '../../components/Section';
 import Icon from '../../components/Icon';
 import { bytesFormatter, bigNumberFormatter } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 import Balance from '../Balance';
+import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -20,11 +21,11 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledGridBalance = styled(Grid)`
-    padding-right: 24px;
+  padding-right: 24px;
 `;
 
 const StyledGridSNX = styled(Grid)`
-    padding-right: 6px;
+  padding-right: 6px;
 `;
 
 const StyledButton = styled(Button)`
@@ -35,7 +36,7 @@ const StyledButton = styled(Button)`
     padding: 16px 24px;
     min-width: 340px;
   }
-  
+
   @media screen and (max-width: 900px) {
     width: 100%;
   }
@@ -103,7 +104,6 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   });
   const SNXBytes = bytesFormatter('SNX');
 
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -142,7 +142,8 @@ const useGetIssuanceData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Mint({ address, appsSdk }: any) {
+function Mint() {
+  const { safeInfo, appsSdk } = useContext(SafeContext);
   const [mintAmount, setMintAmount] = useState('');
   const [error, setError] = useState('');
 
@@ -153,7 +154,7 @@ function Mint({ address, appsSdk }: any) {
     SNXPrice,
     debtBalance,
     snxBalance
-  } = useGetIssuanceData(address, sUSDBytes);
+  } = useGetIssuanceData(safeInfo.safeAddress, sUSDBytes);
 
   useEffect(() => {
     const parsedMintAmount = parseFloat(mintAmount);
@@ -169,7 +170,6 @@ function Mint({ address, appsSdk }: any) {
 
   const handleMint = () => {
     const {
-      // @ts-ignore
       snxJS: { Synthetix }
     } = snxJSConnector;
     let data;
@@ -181,13 +181,11 @@ function Mint({ address, appsSdk }: any) {
       data = Synthetix.contract.interface.functions.issueMaxSynths.encode([]);
     } else {
       data = Synthetix.contract.interface.functions.issueSynths.encode([
-        // @ts-ignore
         snxJSConnector.utils.parseEther(parsedMintAmount.toString())
       ]);
     }
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
       value: 0,
       data
@@ -260,14 +258,14 @@ function Mint({ address, appsSdk }: any) {
   );
 }
 
-function MintPage({ address, appsSdk }: any) {
+function MintPage() {
   return (
     <StyledGrid container>
       <StyledGridBalance item sm={5}>
         <Balance />
       </StyledGridBalance>
       <StyledGridSNX item sm={7}>
-        <Mint address={address} appsSdk={appsSdk} />
+        <Mint />
       </StyledGridSNX>
     </StyledGrid>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { Text, TextField } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
@@ -14,9 +14,10 @@ import {
   secondsToTime
 } from '../../helpers/formatters';
 import IconText from '../../components/IconText';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { differenceInSeconds, addSeconds } from 'date-fns';
+import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -25,11 +26,11 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledGridBalance = styled(Grid)`
-    padding-right: 24px;
+  padding-right: 24px;
 `;
 
 const StyledGridSNX = styled(Grid)`
-    padding-right: 6px;
+  padding-right: 6px;
 `;
 
 const BurnButton = styled(Button)`
@@ -41,7 +42,7 @@ const BurnButton = styled(Button)`
     margin-top: 4rem;
     min-width: 340px;
   }
-  
+
   @media screen and (max-width: 900px) {
     width: 100%;
   }
@@ -120,7 +121,6 @@ const useGetDebtData = (walletAddress: string, sUSDBytes: any): Data => {
     debtEscrow: 0
   });
   const SNXBytes = bytesFormatter('SNX');
-  // @ts-ignore
   const snxJS = snxJSConnector.snxJS;
 
   useEffect(() => {
@@ -175,7 +175,8 @@ const useGetDebtData = (walletAddress: string, sUSDBytes: any): Data => {
   return data;
 };
 
-function Burn({ address, appsSdk }: any) {
+function Burn() {
+  const { safeInfo, appsSdk } = useContext(SafeContext);
   const [burnAmount, setBurnAmount] = useState('');
   const [waitingPeriod, setWaitingPeriod] = useState(0);
   const [issuanceDelay, setIssuanceDelay] = useState(0);
@@ -190,16 +191,15 @@ function Burn({ address, appsSdk }: any) {
     //SNXPrice,
     burnAmountToFixCRatio
     //debtEscrow
-  } = useGetDebtData(address, sUSDBytes);
+  } = useGetDebtData(safeInfo.safeAddress, sUSDBytes);
 
   const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
     const {
-      // @ts-ignore
       snxJS: { Exchanger }
     } = snxJSConnector;
     try {
       const maxSecsLeftInWaitingPeriod = await Exchanger.maxSecsLeftInWaitingPeriod(
-        address,
+        safeInfo.safeAddress,
         bytesFormatter('sUSD')
       );
       setWaitingPeriod(Number(maxSecsLeftInWaitingPeriod));
@@ -211,7 +211,6 @@ function Burn({ address, appsSdk }: any) {
 
   const getIssuanceDelay = useCallback(async () => {
     const {
-      // @ts-ignore
       snxJS: { Issuer }
     } = snxJSConnector;
     try {
@@ -220,8 +219,8 @@ function Burn({ address, appsSdk }: any) {
         lastIssueEvent,
         minimumStakeTime
       ] = await Promise.all([
-        Issuer.canBurnSynths(address),
-        Issuer.lastIssueEvent(address),
+        Issuer.canBurnSynths(safeInfo.safeAddress),
+        Issuer.lastIssueEvent(safeInfo.safeAddress),
         Issuer.minimumStakeTime()
       ]);
 
@@ -260,7 +259,7 @@ function Burn({ address, appsSdk }: any) {
     if (parsedBurnAmount <= 0) {
       setError('Invalid amount');
     } else if (parsedBurnAmount > maxBurnAmount) {
-      setError('You do not have that much sUSD to burn');
+      setError('Not enough sUSD to burn');
     } else {
       setError('');
     }
@@ -268,7 +267,6 @@ function Burn({ address, appsSdk }: any) {
 
   const handleBurn = async () => {
     const {
-      // @ts-ignore
       snxJS: { Synthetix, Issuer }
     } = snxJSConnector;
     let data;
@@ -281,11 +279,10 @@ function Burn({ address, appsSdk }: any) {
       if (await Synthetix.isWaitingPeriod(bytesFormatter('sUSD')))
         throw new Error('Waiting period for sUSD is still ongoing');
 
-      if (!(await Issuer.canBurnSynths(address)))
+      if (!(await Issuer.canBurnSynths(safeInfo.safeAddress)))
         throw new Error('Waiting period to burn is still ongoing');
 
       data = Synthetix.contract.interface.functions.burnSynths.encode([
-        // @ts-ignore
         snxJSConnector.utils.parseEther(parsedBurnAmount.toString())
       ]);
     } catch (error) {
@@ -294,7 +291,6 @@ function Burn({ address, appsSdk }: any) {
     }
 
     const tx = {
-      // @ts-ignore
       to: snxJSConnector.utils.contractSettings.addressList.Synthetix,
       value: 0,
       data
@@ -389,14 +385,14 @@ function Burn({ address, appsSdk }: any) {
   );
 }
 
-function BurnPage({ address, appsSdk }: any) {
+function BurnPage() {
   return (
     <StyledGrid container>
       <StyledGridBalance item sm={5}>
         <Balance />
       </StyledGridBalance>
       <StyledGridSNX item sm={7}>
-        <Burn address={address} appsSdk={appsSdk} />
+        <Burn />
       </StyledGridSNX>
     </StyledGrid>
   );

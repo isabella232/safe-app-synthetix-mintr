@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Text, Divider } from '@gnosis.pm/safe-react-components';
+import { Text } from '@gnosis.pm/safe-react-components';
 import IconText from '../components/IconText';
 import { BalancesContext } from './BalancesProvider';
 import { RatesContext } from './RatesProvider';
@@ -161,7 +161,7 @@ function Balance() {
           ))}
         </Grid>
       </Grid>
-      
+
       <Grid container>
         <Grid item xs={12} sm={12}>
           <TotalSnx />
