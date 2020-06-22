@@ -14,12 +14,16 @@ import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
-    padding: 16px;
+    padding: 24px 16px;
   }
 `;
 
-const StyledGridItem = styled(Grid)`
+const StyledGridBalance = styled(Grid)`
   padding-right: 24px;
+`;
+
+const StyledGridSNX = styled(Grid)`
+  padding-right: 6px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -28,6 +32,10 @@ const SubmitButton = styled(Button)`
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
+    min-width: 340px;
+  }
+
+  @media screen and (max-width: 900px) {
     width: 100%;
   }
 
@@ -210,12 +218,12 @@ function Claim() {
 function ClaimPage() {
   return (
     <StyledGrid container>
-      <StyledGridItem item sm={6}>
+      <StyledGridBalance item sm={5}>
         <Balance />
-      </StyledGridItem>
-      <Grid item sm={6}>
+      </StyledGridBalance>
+      <StyledGridSNX item sm={7}>
         <Claim />
-      </Grid>
+      </StyledGridSNX>
     </StyledGrid>
   );
 }

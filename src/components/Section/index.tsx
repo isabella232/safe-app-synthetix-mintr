@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { Text, Title } from '@gnosis.pm/safe-react-components';
 
 const StyledGrid = styled(Grid)`
-  margin-bottom: 2rem;
+  margin-bottom: 2.6rem;
 `;
 
 const StyledTitle = styled(Title)`

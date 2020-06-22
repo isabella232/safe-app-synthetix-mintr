@@ -21,12 +21,16 @@ import { SafeContext } from '../SafeProvider';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
-    padding: 16px;
+    padding: 24px 16px;
   }
 `;
 
-const StyledGridItem = styled(Grid)`
+const StyledGridBalance = styled(Grid)`
   padding-right: 24px;
+`;
+
+const StyledGridSNX = styled(Grid)`
+  padding-right: 6px;
 `;
 
 const BurnButton = styled(Button)`
@@ -35,8 +39,12 @@ const BurnButton = styled(Button)`
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
+    margin-top: 4rem;
+    min-width: 340px;
+  }
+
+  @media screen and (max-width: 900px) {
     width: 100%;
-    margin-top: 2rem;
   }
 
   &.MuiButton-root:hover {
@@ -380,12 +388,12 @@ function Burn() {
 function BurnPage() {
   return (
     <StyledGrid container>
-      <StyledGridItem item sm={6}>
+      <StyledGridBalance item sm={5}>
         <Balance />
-      </StyledGridItem>
-      <Grid item sm={6}>
+      </StyledGridBalance>
+      <StyledGridSNX item sm={7}>
         <Burn />
-      </Grid>
+      </StyledGridSNX>
     </StyledGrid>
   );
 }
