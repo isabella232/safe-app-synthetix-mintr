@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,11 +8,22 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
 import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 import { formatCurrency } from '../../helpers/formatters';
 import IconText from '../IconText';
 import { Text } from '@gnosis.pm/safe-react-components';
+
+const StyledTableContainer = styled(TableContainer)`
+  & .MuiTableCell-sizeSmall {
+    padding: 6px 5px 6px 10px;
+  }
+`;
+
+const StyledText = styled(Text)`
+  & {
+    text-align: right;
+  }
+`;
 
 const TABLE_COLUMNS = ['SNX', 'sUSD', 'ETH', 'Synths', 'Debt'];
 const AGGREGATED_COLUMNS = ['Synths', 'Debt'];
@@ -55,16 +67,16 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
     debtData
   );
   return (
-    <TableContainer component={Paper}>
+    <StyledTableContainer component={Paper}>
       <Table size="small" aria-label="compact table">
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
             <TableCell align="right">
-              <Text size="sm">Balance</Text>
+              <StyledText size="sm">Balance</StyledText>
             </TableCell>
             <TableCell align="right">
-              <Text size="sm">$ USD</Text>
+              <StyledText size="sm">$ USD</StyledText>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -80,16 +92,20 @@ const BalanceTable = ({ walletBalancesWithRates, rates, debtData }) => {
                 />
               </TableCell>
               <TableCell align="right">
-                <Text size="sm">{formatCurrency(token.balance)}</Text>
+                <StyledText size="sm">
+                  {formatCurrency(token.balance)}
+                </StyledText>
               </TableCell>
               <TableCell align="right">
-                <Text size="sm">{formatCurrency(token.valueUSD)}</Text>
+                <StyledText size="sm">
+                  {formatCurrency(token.valueUSD)}
+                </StyledText>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </StyledTableContainer>
   );
 };
 

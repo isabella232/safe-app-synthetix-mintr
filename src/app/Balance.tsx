@@ -20,6 +20,8 @@ const StyledTotalSnx = styled(Grid)`
 
 const StyledText = styled(Text)`
   font-size: 0.7em;
+  text-align: ${(props: { textAlign?: string }) =>
+    props.textAlign ? props.textAlign : 'left'};
 
   @media screen and (max-width: 800px) {
     font-size: 0.65em;
@@ -30,7 +32,7 @@ const StyledLinearProgress = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 15px;
     margin-bottom: 10px;
-    margin-top: 10px;
+    margin-top: 2px;
     background-color: ${({ theme }) => theme.colors.primaryLight};
   }
   & .MuiLinearProgress-barColorPrimary {
@@ -62,7 +64,7 @@ const TotalSnx = () => {
         </StyledText>
       </Grid>
       <Grid item xs={6}>
-        <StyledText size="sm">
+        <StyledText size="sm" textAlign="right">
           Transferable: {formatCurrency(data?.debtData?.transferable || 0)}
         </StyledText>
       </Grid>
@@ -79,7 +81,7 @@ const TotalSnx = () => {
         <StyledText size="sm">Staked: {formatCurrency(snxLocked)}</StyledText>
       </Grid>
       <Grid item xs={6}>
-        <StyledText size="sm">
+        <StyledText size="sm" textAlign="right">
           Not staked: {formatCurrency(snxBalance - snxLocked || 0)}
         </StyledText>
       </Grid>
@@ -96,7 +98,7 @@ const TotalSnx = () => {
         </StyledText>
       </Grid>
       <Grid item xs={6}>
-        <StyledText size="sm">
+        <StyledText size="sm" textAlign="right">
           Not escrowed: {formatCurrency(snxBalance - totalEscrow)}
         </StyledText>
       </Grid>
@@ -154,8 +156,7 @@ function Balance() {
                 iconSize="sm"
                 textSize="sm"
                 iconType={asset.toLocaleLowerCase()}
-                text={`1 ${asset} = $
-                  ${formatCurrency(rates[asset])} USD`}
+                text={`1 ${asset} = ${formatCurrency(rates[asset])} USD`}
               />
             </Asset>
           ))}

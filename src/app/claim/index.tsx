@@ -45,7 +45,7 @@ const SubmitButton = styled(Button)`
 `;
 
 const StyledGrid = styled(Grid)`
-  margin-top: 20px !important;
+  margin-top: 5px !important;
 `;
 
 const ButtonContainer = styled.div`

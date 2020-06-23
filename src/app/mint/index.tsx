@@ -77,7 +77,7 @@ const StyledIconText = styled(IconText)`
 `;
 
 const StyledGrid = styled(Grid)`
-  margin-top: 20px !important;
+  margin-top: 5px !important;
 `;
 
 const TextContainer = styled.div`
