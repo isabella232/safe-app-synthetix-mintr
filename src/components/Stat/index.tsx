@@ -8,12 +8,11 @@ const Container = styled.div`
 
 const StyledTitle = styled(Title)`
   font-size: 1.8rem;
-  margin: 10px;
+  margin: 7px;
   color: #333333;
 `;
 
-const StyledText = styled(Text)`
-  font-size: .75rem;
+const StyledText = styled(Text)`  
   margin: 0 0 24px 0;
   color: #333333;
 `;
@@ -27,7 +26,7 @@ function Stat({ stat, description }: Props) {
   return (
     <Container>
       <StyledTitle size="md">{stat}</StyledTitle>
-      <StyledText size="sm" center>
+      <StyledText size="md" center>
         {description}
       </StyledText>
     </Container>

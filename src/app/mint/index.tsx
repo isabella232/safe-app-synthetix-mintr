@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Text, TextField } from '@gnosis.pm/safe-react-components';
+import { Text } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import numbro from 'numbro';
 import Section from '../../components/Section';
 import Icon from '../../components/Icon';
+import AmountInput from '../../components/AmountInput';
 import { bytesFormatter, bigNumberFormatter } from '../../helpers/formatters';
-import IconText from '../../components/IconText';
 import { snxJSConnector } from '../../helpers/snxJSConnector';
 import { estimateCRatio, getStakingAmount } from './mint-helpers';
 import Balance from '../Balance';
@@ -34,7 +34,6 @@ const StyledButton = styled(Button)`
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
-    min-width: 340px;
   }
 
   @media screen and (max-width: 900px) {
@@ -46,38 +45,12 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const MaxButton = styled(Button)`
-  &.MuiButton-root {
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: #ffffff;
-    width: 100%;
-  }
-
-  &.MuiButton-root:hover {
-    background-color: #8c94ff;
-  }
-`;
-
-const StyledTextField = styled(TextField)`
-  &.MuiTextField-root {
-    width: 100%;
-  }
-`;
-
 const StyledText = styled(Text)`
   margin-bottom: 0.5rem;
 `;
 
-const StyledIconText = styled(IconText)`
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.primaryLight};
-  padding: 4px;
-  border-radius: 4px 0 0 4px;
-  width: 100%;
-`;
-
 const StyledGrid = styled(Grid)`
-  margin-top: 20px !important;
+  margin-top: 5px !important;
 `;
 
 const TextContainer = styled.div`
@@ -203,33 +176,13 @@ function Mint() {
       />
       <StyledPaper elevation={3}>
         <StyledText size="lg">Confirm or enter the amount to mint</StyledText>
-        <Grid container spacing={2} alignItems="center" justify="flex-start">
-          <Grid item sm={2}>
-            <StyledIconText
-              iconSize="sm"
-              textSize="lg"
-              iconType="susd"
-              text="sUSD"
-            />
-          </Grid>
-          <Grid item sm={7}>
-            <StyledTextField
-              label="Amount"
-              value={mintAmount}
-              placeholder="0.00"
-              onChange={e => setMintAmount(e.target.value)}
-              meta={{ error: error }}
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <MaxButton
-              variant="contained"
-              onClick={() => setMintAmount(issuableSynths)}
-            >
-              MAX
-            </MaxButton>
-          </Grid>
-        </Grid>
+        <AmountInput
+          value={mintAmount}
+          buttonLabel="MAX"
+          error={error}
+          onValueChange={value => setMintAmount(value)}
+          onButtonClick={() => setMintAmount(issuableSynths)}
+        />
         <TextContainer>
           <Text size="sm">
             Staking:{' '}
