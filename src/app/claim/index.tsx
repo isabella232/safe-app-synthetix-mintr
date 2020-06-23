@@ -32,7 +32,6 @@ const SubmitButton = styled(Button)`
     color: #ffffff;
     font-size: 1rem;
     padding: 16px 24px;
-    min-width: 340px;
   }
 
   @media screen and (max-width: 900px) {
