@@ -214,10 +214,10 @@ function Mint() {
 function MintPage() {
   return (
     <StyledGrid container>
-      <StyledGridBalance item sm={5}>
+      <StyledGridBalance item xs={5}>
         <Balance />
       </StyledGridBalance>
-      <StyledGridSNX item sm={7}>
+      <StyledGridSNX item xs={7}>
         <Mint />
       </StyledGridSNX>
     </StyledGrid>

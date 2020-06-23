@@ -144,13 +144,7 @@ function Balance() {
         </Grid>
       </Grid>
 
-      <Grid container direction="row" justify="center" alignItems="center">
-        <Grid item xs={12} sm={6}>
-          <Text size="md" strong>
-            TOTAL: {formatCurrency(snxBalance) || 0} SNX
-          </Text>
-        </Grid>
-
+      <Grid container justify="center" alignItems="center" spacing={3}>
         <Grid item xs={12} sm={6}>
           {['SNX', 'ETH'].map((asset: any) => (
             <Asset key={asset}>
@@ -163,13 +157,15 @@ function Balance() {
             </Asset>
           ))}
         </Grid>
-      </Grid>
 
-      <Grid container>
-        <Grid item xs={12} sm={12}>
-          <TotalSnx />
+        <Grid item xs={12} sm={6}>
+          <Text size="md" strong>
+            TOTAL: {formatCurrency(snxBalance) || 0} SNX
+          </Text>
         </Grid>
       </Grid>
+
+      <TotalSnx />
 
       <TableContainer>
         <BalanceTable

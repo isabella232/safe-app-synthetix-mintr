@@ -54,7 +54,7 @@ const ButtonGrid = styled(Grid)`
   background-color: ${({ theme }) => theme.colors.primaryLight};
 
   &&.MuiGrid-item {
-    padding: 10px;
+    padding: 10px 5px;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
@@ -77,7 +77,7 @@ function AmountInput({
 }: Props) {
   return (
     <Grid container spacing={1} alignItems="center" justify="flex-start">
-      <Grid item sm={2}>
+      <Grid item xs={2}>
         <StyledIconText
           iconSize="sm"
           textSize="lg"
@@ -85,7 +85,7 @@ function AmountInput({
           text="sUSD"
         />
       </Grid>
-      <InputGrid item sm={buttonLabel ? 7 : 10}>
+      <InputGrid item xs={buttonLabel ? 7 : 10}>
         <StyledTextField
           rounded={buttonLabel ? undefined : 'true'}
           label="Amount"
@@ -96,7 +96,7 @@ function AmountInput({
         />
       </InputGrid>
       {buttonLabel ? (
-        <ButtonGrid item sm={3}>
+        <ButtonGrid item xs={3}>
           <StyledButton variant="contained" onClick={onButtonClick}>
             {buttonLabel}
           </StyledButton>
