@@ -19,7 +19,7 @@ const StyledPaper = styled(Paper)`
 `;
 
 const StyledGridBalance = styled(Grid)`
-  padding-right: 24px;
+  padding: 0 24px 0 6px;
 `;
 
 const StyledGridSNX = styled(Grid)`
