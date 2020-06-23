@@ -18,8 +18,11 @@ const StyledTotalSnx = styled(Grid)`
   margin-top: 16px;
 `;
 
+const GridRatio = styled(Grid)`
+  margin-top: 14px;
+`;
+
 const StyledText = styled(Text)`
-  font-size: 0.7em;
   text-align: ${(props: { textAlign?: string }) =>
     props.textAlign ? props.textAlign : 'left'};
 
@@ -128,23 +131,22 @@ function Balance() {
   return (
     <>
       <Grid container>
+        <GridRatio xs={12}>
+          <Text size="lg" center>
+            Collateralization ratio
+          </Text>
+        </GridRatio>
         <Grid item xs={12} sm={6}>
-          <Stat
-            stat={`${currentRatio}%`}
-            description="Current collateralization ratio"
-          ></Stat>
+          <Stat stat={`${currentRatio}%`} description="Current"></Stat>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Stat
-            stat={`${ratioTarget}%`}
-            description="Target collateralization ratio"
-          ></Stat>
+          <Stat stat={`${ratioTarget}%`} description="Target"></Stat>
         </Grid>
       </Grid>
 
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item xs={12} sm={6}>
-          <Text size="sm" strong>
+          <Text size="md" strong>
             TOTAL: {formatCurrency(snxBalance) || 0} SNX
           </Text>
         </Grid>

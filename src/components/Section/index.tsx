@@ -16,7 +16,7 @@ const StyledTitle = styled(Title)`
 `;
 
 const StyledText = styled(Text)`
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #333333;
 `;
 
