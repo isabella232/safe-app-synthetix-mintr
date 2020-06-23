@@ -12,10 +12,11 @@ const StyledTextField = styled(TextField)`
   & .MuiFilledInput-root {
     background-color: ${({ theme }) => theme.colors.primaryLight};
     border-radius: 0;
-    ${(props: { rounded?: boolean }) =>
-      props.rounded &&
-      `border-top-right-radius: 4px; 
-       border-bottom-right-radius: 4px`}
+    ${(props: { rounded?: string }) =>
+      props.rounded === 'true'
+        ? `border-top-right-radius: 4px; 
+       border-bottom-right-radius: 4px`
+        : ''}
   }
 `;
 
@@ -86,7 +87,7 @@ function AmountInput({
       </Grid>
       <InputGrid item sm={buttonLabel ? 7 : 10}>
         <StyledTextField
-          rounded={!buttonLabel}
+          rounded={buttonLabel ? undefined : 'true'}
           label="Amount"
           value={value}
           placeholder="0.00"
