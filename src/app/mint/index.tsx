@@ -73,6 +73,10 @@ const StyledIconText = styled(IconText)`
   padding: 4px;
   border-radius: 4px 0 0 4px;
   width: 100%;
+
+  & p {
+    margin-left: 0;
+  }
 `;
 
 const StyledGrid = styled(Grid)`
