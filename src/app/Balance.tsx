@@ -131,7 +131,7 @@ function Balance() {
   return (
     <>
       <Grid container>
-        <GridRatio xs={12}>
+        <GridRatio item xs={12}>
           <Text size="lg" center>
             Collateralization ratio
           </Text>
