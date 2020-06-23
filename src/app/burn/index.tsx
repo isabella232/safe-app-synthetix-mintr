@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { Text, TextField } from '@gnosis.pm/safe-react-components';
+import { Text } from '@gnosis.pm/safe-react-components';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -13,11 +13,11 @@ import {
   formatCurrency,
   secondsToTime
 } from '../../helpers/formatters';
-import IconText from '../../components/IconText';
 import { snxJSConnector } from '../../helpers/snxJSConnector';
 import Balance from '../Balance';
 import { differenceInSeconds, addSeconds } from 'date-fns';
 import { SafeContext } from '../SafeProvider';
+import AmountInput from '../../components/AmountInput';
 
 const StyledPaper = styled(Paper)`
   &.MuiPaper-root {
@@ -67,20 +67,6 @@ const StyledButton = styled(Button)`
       padding: 4px;
     }
   }
-`;
-
-const StyledTextField = styled(TextField)`
-  &.MuiTextField-root {
-    width: 100%;
-  }
-`;
-
-const StyledIconText = styled(IconText)`
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.primaryLight};
-  padding: 4px;
-  border-radius: 4px 0 0 4px;
-  width: 100%;
 `;
 
 const StyledGrid = styled(Grid)`
@@ -359,25 +345,11 @@ function Burn() {
           <Text size="sm">${formatCurrency(maxBurnAmount)}</Text>
           <Text size="sm">${formatCurrency(burnAmountToFixCRatio)}</Text>
         </TextContainer>
-        <Grid container spacing={2} alignItems="center" justify="flex-start">
-          <Grid item sm={2}>
-            <StyledIconText
-              iconSize="sm"
-              textSize="lg"
-              iconType="susd"
-              text="sUSD"
-            />
-          </Grid>
-          <Grid item sm={10}>
-            <StyledTextField
-              label="Amount"
-              value={burnAmount}
-              placeholder="0.00"
-              onChange={e => setBurnAmount(e.target.value)}
-              meta={{ error: error }}
-            />
-          </Grid>
-        </Grid>
+        <AmountInput
+          value={burnAmount}
+          error={error}
+          onValueChange={value => setBurnAmount(value)}
+        />
         {renderSubmitButton()}
       </StyledPaper>
     </>
