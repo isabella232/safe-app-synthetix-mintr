@@ -70,7 +70,7 @@ const App = () => {
         const balance = await provider.getBalance(address);
         setSafeInfo({
           safeAddress: address,
-          network: 'rinkeby',
+          network: 'mainnet',
           ethBalance: balance.toString()
         });
       };
