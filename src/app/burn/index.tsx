@@ -85,6 +85,10 @@ const TextContainer = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+const StyledText  = styled(Text)`
+  margin-top: 0.5rem;
+`;
+
 type Data = {
   issuanceRatio: any;
   sUSDBalance: any;
@@ -289,10 +293,10 @@ function Burn() {
       return (
         <>
           <BurnButton onClick={getIssuanceDelay}>Retry</BurnButton>
-          <Text size="sm">
+          <StyledText size="sm">
             There is a waiting period after minting before you can burn. Please
             wait {secondsToTime(issuanceDelay)} before attempting to burn sUSD.
-          </Text>
+          </StyledText>
         </>
       );
     } else if (waitingPeriod) {
