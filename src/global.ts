@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
 
     #root {
         height: 100%;
+        margin: 8px 0 0 8px;
     }
 
     @font-face {
